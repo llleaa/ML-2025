@@ -20,9 +20,8 @@ def stochastic_gradient(y, tx, w, batch_size=1):
     tx_batch = tx[indices]
     
     #compute gradient 
-    loss = np.sum(np.square(y_batch - tx_batch @ w)) / (2 * batch_size)
-    grad = -(tx_batch.T @ (y_batch - tx_batch @ w)) / batch_size
-    return grad, loss
+    grad = gradient(y_batch, tx_batch, w)
+    return grad
 
 
 def mean_squared_error_gd(y, tx, initial_w, max_iters, gamma):
@@ -37,13 +36,14 @@ def mean_squared_error_gd(y, tx, initial_w, max_iters, gamma):
 
 def mean_squared_error_sgd(y, tx, initial_w, max_iters, gamma):
     w = initial_w
-    batch_size = 10
+    batch_size = 1
+    loss = 10
     for i in range(max_iters):
-        grad, loss = stochastic_gradient(y, tx, w, batch_size=batch_size)
+        grad = stochastic_gradient(y, tx, w, batch_size=batch_size)
         w = w - gamma * grad
-        print(i, loss)
+        print(i)
 
-    return w,loss
+    return w, loss
 
 
 
@@ -77,6 +77,7 @@ if __name__ == '__main__':
     initial_w = np.random.randn(x_train.shape[1])
 
     #w, final_loss  = mean_squared_error_gd(y_train, x_train, initial_w, max_iters=500, gamma=0.01)
-    w, final_loss  = mean_squared_error_sgd(y_train, x_train, initial_w, max_iters=100, gamma=0.1)
+    w, final_loss  = mean_squared_error_sgd(y_train, x_train, initial_w, max_iters=1000000, gamma=0.0001)
+    print("Training loss :", MSE_loss(y_train, x_train, w))
 
-    print(timeit.default_timer() - start)
+    print("Time :",timeit.default_timer() - start)

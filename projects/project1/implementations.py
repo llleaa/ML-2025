@@ -46,6 +46,12 @@ def mean_squared_error_sgd(y, tx, initial_w, max_iters, gamma):
     return w, loss
 
 
+def least_squares(y, tx):
+    w = np.linalg.solve(tx.T @ tx, tx.T @ y)
+    loss = MSE_loss(y, tx, w)
+    return w, loss
+
+
 
 if __name__ == '__main__':
     start = timeit.default_timer()

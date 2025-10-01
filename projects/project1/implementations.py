@@ -51,6 +51,12 @@ def least_squares(y, tx):
     loss = MSE_loss(y, tx, w)
     return w, loss
 
+def ridge_regression(y, tx, lambda_):
+    N = y.shape[0]
+    D = tx.shape[1]
+    lambda_prime = 2 * N * lambda_
+    w = np.linalg.solve(tx.T @ tx + lambda_prime * np.eye(D), tx.T @ y)
+    return w
 
 
 if __name__ == '__main__':

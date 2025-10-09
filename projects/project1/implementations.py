@@ -58,6 +58,18 @@ def ridge_regression(y, tx, lambda_):
     w = np.linalg.solve(tx.T @ tx + lambda_prime * np.eye(D), tx.T @ y)
     return w
 
+def logistic_regression(y, tx, initial_w, max_iters, gamma):
+    w = initial_w
+    for i in range(max_iters):
+        loss = calculate_loss(y, tx, w)
+        grad = calculate_gradient(y, tx, w)
+        w = w - gamma * grad
+    return w, loss
+
+def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma):
+    # Implement code
+    return w, loss
+
 
 if __name__ == '__main__':
     start = timeit.default_timer()

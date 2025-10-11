@@ -149,6 +149,48 @@ def ridge_regression(y, tx, lambda_):
     w = np.linalg.solve(tx.T @ tx + lambda_prime * np.eye(D), tx.T @ y)
     return w
 
+def sigmoid(t):
+    """apply sigmoid function on t.
+
+    Args:
+        t: scalar or numpy array
+
+    Returns:
+        sigmoid : scalar or numpy array
+    """
+    return 1/(1 + np.exp(-t))
+
+def loss_logistic(y, tx, w):
+    """compute the cost by negative log likelihood.
+
+    Args:
+        y:  shape=(N, 1)
+        tx: shape=(N, D)
+        w:  shape=(D, 1)
+
+    Returns:
+        loss : non-negative loss
+    """
+    assert y.shape[0] == tx.shape[0]
+    assert tx.shape[1] == w.shape[0]
+    return (-1/y.shape[0]) * np.sum(y*np.log(sigmoid(tx@w)) + (1-y)*np.log(1 - sigmoid(tx@w)))
+
+
+def gradient_logistic(y, tx, w):
+    """compute the gradient of loss.
+
+    Args:
+        y:  shape=(N, 1)
+        tx: shape=(N, D)
+        w:  shape=(D, 1)
+
+    Returns:
+        gradient : vector of shape (D, 1)
+
+    """
+
+    return (1/y.shape[0]) * tx.T@(sigmoid(tx@w) - y) 
+
 def logistic_regression(y, tx, initial_w, max_iters, gamma):
     """
     Perform max_iters steps of gradient descent using logistic regression.
@@ -166,18 +208,32 @@ def logistic_regression(y, tx, initial_w, max_iters, gamma):
     
     w = initial_w
     for i in range(max_iters):
-        loss = calculate_loss(y, tx, w)
-        grad = calculate_gradient(y, tx, w)
+        loss = loss_logistic(y, tx, w)
+        grad = gradient_logistic(y, tx, w)
         w = w - gamma * grad
     return w, loss
 
 def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma):
-    # Implement code
-    return w, loss
+    """return the loss and gradient.
+
+    Args:
+        y:  shape=(N, 1)
+        tx: shape=(N, D)
+        w:  shape=(D, 1)
+        lambda_: scalar
+
+    Returns:
+        gradient: shape=(D, 1)
+        loss: scalar number
+        
+    """
+    loss = loss_logistic(y, tx, w)
+    gradient = gradient_logistic(y,tx,w) + 2*lambda_*w
+    return gradient, loss
 
 
 if __name__ == '__main__':
-    start = timeit.default_timer()
+    #start = timeit.default_timer()
 
     # Loading data, once its done no need to do it again
     # x_train, x_test, y_train, train_ids, test_ids = helpers.load_csv_data(os.getcwd() + "\\data\\dataset", sub_sample=True)
@@ -209,4 +265,4 @@ if __name__ == '__main__':
     w, final_loss  = mean_squared_error_sgd(y_train, x_train, initial_w, max_iters=1000000, gamma=0.0001)
     print("Training loss :", MSE_loss(y_train, x_train, w))
 
-    print("Time :",timeit.default_timer() - start)
+    #print("Time :",timeit.default_timer() - start)

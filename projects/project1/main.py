@@ -24,6 +24,8 @@ if __name__ == '__main__':
     inds = np.where(np.isnan(x_train))
     x_train[inds] = np.take(col_mean, inds[1])
 
+    x_train = imp.build_poly(x_train, degree=3)
+
     # Normalization
     mean = np.nanmean(x_train, axis=0)
     std = np.nanstd(x_train, axis=0)
@@ -31,11 +33,13 @@ if __name__ == '__main__':
 
     x_train = (x_train - mean) / std
 
+
     initial_w = np.random.randn(x_train.shape[1])
 
-    # w, final_loss  = imp.mean_squared_error_gd(y_train, x_train, initial_w, max_iters=500, gamma=0.01)
-    w, final_loss  = imp.mean_squared_error_sgd(y_train, x_train, initial_w, max_iters=1000000, gamma=0.0001)
+    #w, final_loss  = imp.mean_squared_error_gd(y_train, x_train, initial_w, max_iters=500, gamma=0.01)
+    loss_tr, loss_te = imp.cross_validation(y_train,x_train,k_fold=100,lambda_=10,function_name="mean sqrt",initial_w= initial_w,max_iters=1000,gamma=0.01, degree = 3)
 
-    print("Training loss :", imp.MSE_loss(y_train, x_train, w))
+    print("Test loss :", loss_te)
+    print("Training loss:", loss_tr)
 
-    print("Time :" ,timeit.default_timer() - start)
+    print("Time :" , timeit.default_timer() - start)

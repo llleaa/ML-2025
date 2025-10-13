@@ -29,6 +29,7 @@ def gradient(y, tx, weights):
     """
     return (- tx.T @ (y - tx @ weights)) / y.shape[0]
 
+
 def stochastic_gradient(y, tx, w, batch_size=1):
     """Calculate the stochastic gradient of the MSE loss function.
 
@@ -42,15 +43,53 @@ def stochastic_gradient(y, tx, w, batch_size=1):
         the value of the stochastic gradient, corresponding to the input parameters weights, and batch size.
     """
     
-    #batch making
-    n = y.shape[0]
-    indices = np.random.choice(n, batch_size, replace=False)
-    y_batch = y[indices]
-    tx_batch = tx[indices]
+    indices = np.random.choice(y.shape[0], batch_size, replace=False)
     
-    #compute gradient 
-    grad = gradient(y_batch, tx_batch, w)
-    return grad
+    return gradient(y[indices], tx[indices], w)
+
+def gradient_descent(y, tx, w, max_iters, gamma, gradient=gradient, loss = MSE_loss, lambda_ = 0):
+    """
+    
+    """
+
+    for i in range(max_iters):
+        w = w - gamma * gradient(y, tx, w) + lambda_ * w
+        if i % 100 == 0:
+            print(f"Iter no {i} loss : {loss(y, tx, w)}")
+    return w
+
+def stochastic_gradient_descent(y, tx, w, max_iters, gamma, batch_size, gradient=gradient, loss = MSE_loss, lambda_ = 0):
+    """
+    
+    """
+    
+    for i in range(max_iters):
+        w = w - gamma * gradient(y, tx, w, batch_size=batch_size) + lambda_ * w
+        if i % 100 == 0:
+            print(f"Iter no {i} loss : {loss(y, tx, w)}")
+
+    return w
+
+def adam(y, tx, w, max_iters, gamma, beta1 = 0.9, beta2 = 0.999, gradient=gradient, loss=MSE_loss):
+
+    previous_ema = 0
+    previous_ema_sq = 0
+    ema = 0
+    ema_sq = 0
+
+    for i in range(max_iters):
+        grad = gradient(y, tx, w)
+        ema = beta1 * previous_ema + (1 - beta1) * grad
+        ema_sq = beta2 * previous_ema_sq + (1 - beta2) * (grad ** 2)
+        delta = ema / (np.sqrt(ema_sq) + 1e-8)
+        w = w - gamma * delta
+        previous_ema = ema
+        previous_ema_sq = ema_sq
+        
+        if i % 100 == 0:
+            print(f"Iter no {i} loss : {loss(y, tx, w)}")
+
+    return w
 
 
 def mean_squared_error_gd(y, tx, initial_w, max_iters, gamma):
@@ -74,12 +113,7 @@ def mean_squared_error_gd(y, tx, initial_w, max_iters, gamma):
         loss: float.
             The final value of the MSE loss function corresponding to the optimized weights.
     """
-    w = initial_w
-    for i in range(max_iters):
-        loss = MSE_loss(y, tx, w)
-        grad = gradient(y, tx, w)
-        w = w - gamma * grad
-        print(i, loss)
+    w = gradient_descent(y, tx, initial_w, max_iters, gamma, gradient = gradient)
 
     return w, MSE_loss(y, tx, w)
 
@@ -104,15 +138,10 @@ def mean_squared_error_sgd(y, tx, initial_w, max_iters, gamma):
         loss: float.
             The final value of the MSE loss function corresponding to the optimized weights.
     """
-    w = initial_w
-    batch_size = 1
-    loss = 10
-    for i in range(max_iters):
-        grad = stochastic_gradient(y, tx, w, batch_size=batch_size)
-        w = w - gamma * grad
-        print(i)
 
-    return w, loss
+    w = stochastic_gradient_descent(y, tx, initial_w, max_iters, gamma, batch_size=1, gradient=gradient, loss=MSE_loss)
+
+    return w, MSE_loss(y, tx, w)
 
 
 def least_squares(y, tx):
@@ -143,10 +172,8 @@ def ridge_regression(y, tx, lambda_):
         w: optimal weights, numpy array of shape(D,), D is the number of features.
     """
 
-    N = y.shape[0]
-    D = tx.shape[1]
-    lambda_prime = 2 * N * lambda_
-    w = np.linalg.solve(tx.T @ tx + lambda_prime * np.eye(D), tx.T @ y)
+    w = np.linalg.solve(tx.T @ tx + 2 * y.shape[0] * lambda_ * np.eye(tx.shape[1]), tx.T @ y)
+    
     return w, MSE_loss(y, tx, w)
 
 def sigmoid(t):
@@ -205,12 +232,29 @@ def logistic_regression(y, tx, initial_w, max_iters, gamma):
         w: shape=(D, 1)
         loss: scalar number
     """
-    
-    w = initial_w
-    for i in range(max_iters):
-        grad = gradient_logistic(y, tx, w)
-        w = w - gamma * grad
+    w = gradient_descent(y, tx, initial_w, max_iters, gamma, gradient=gradient_logistic, loss=loss_logistic)
+
     return w, loss_logistic(y, tx, w)
+
+
+def logistic_regression_adam(y, tx, initial_w, max_iters, gamma):
+    """
+    Perform max_iters steps of adam using logistic regression.
+
+    Args:
+        y:  shape=(N, 1)
+        tx: shape=(N, D)
+        w:  shape=(D, 1)
+        gamma: float
+
+    Returns:
+        w: shape=(D, 1)
+        loss: scalar number
+    """
+    w = adam(y, tx, initial_w, max_iters, gamma, gradient=gradient_logistic, loss=loss_logistic)
+
+    return w, loss_logistic(y, tx, w)
+
 
 def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma):
     """return the loss and gradient.
@@ -226,9 +270,117 @@ def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma):
         loss: scalar number
         
     """
-    w = initial_w
-    for i in range(max_iters):
-        grad = gradient_logistic(y, tx, w) + 2 * lambda_ * w
-        w = w - gamma * grad
+    w = gradient_descent(y, tx, initial_w, max_iters, gamma, gradient=logistic_regression, loss=loss_logistic, lambda_=lambda_)
+
     return w, loss_logistic(y, tx, w)
+
+def build_poly(x, degree):
+    """polynomial basis functions for input data x, for j=0 up to j=degree.
+
+    Args:
+        x: numpy array of shape (N,), N is the number of samples.
+        degree: integer.
+
+    Returns:
+        poly: numpy array of shape (N,d+1)
+
+    """
+    # for j in range(degree + 1):
+    #     if j == 0:
+    #         poly = np.ones((x.shape[0], 1)) # x.shape[0] is N (number of samples)
+    #     else:
+    #         poly = np.c_[poly, x**j]
+    # return poly
+    
+    array = np.array([x**i for i in range(0,degree + 1)])
+    return np.reshape(np.transpose(array, (1,2,0)), (array.shape[1], -1))
+
+
+def build_k_indices(y, k_fold, seed):
+    """build k indices for k-fold.
+
+    Args:
+        y:      shape=(N,)
+        k_fold: K in K-fold, i.e. the fold num
+        seed:   the random seed
+
+    Returns:
+        A 2D array of shape=(k_fold, N/k_fold) that indicates the data indices for each fold
+
+    >>> build_k_indices(np.array([1., 2., 3., 4.]), 2, 1)
+    array([[3, 2],
+           [0, 1]])
+    """
+    num_row = y.shape[0]
+    interval = int(num_row / k_fold)
+    np.random.seed(seed)
+    indices = np.random.permutation(num_row)
+    k_indices = [indices[k * interval : (k + 1) * interval] for k in range(k_fold)]
+    return np.array(k_indices)
+
+def cross_validation_one_step(y, x, k_indices, k, lambda_, function_name, initial_w, max_iters, gamma,degree):
+    """return the loss of ridge regression for a fold corresponding to k_indices (one step)
+
+    Args:
+        y:          shape=(N,)
+        x:          shape=(N,)
+        k_indices:  2D array returned by build_k_indices()
+        k:          scalar, the k-th fold (N.B.: not to confused with k_fold which is the fold nums)
+        lambda_:    scalar, cf. ridge_regression()
+        degree:     scalar, cf. build_poly()
+
+    Returns:
+        train and test root mean square errors rmse = sqrt(2 mse)
+
+    """
+
+    train_indices = [i for i in range(k_indices.shape[0]) if i != k]
+    y_tr, x_tr = y[k_indices[train_indices].flatten()], x[k_indices[train_indices].flatten()]
+    y_te, x_te = y[k_indices[k].flatten()], x[k_indices[k].flatten()]
+    
+    match function_name :
+        case "mean sqrt":
+           w, loss_tr = mean_squared_error_gd(y_tr, x_tr, initial_w, max_iters, gamma)
+           loss_te = MSE_loss(y_te,x_te,w)
+           return np.sqrt(2 * loss_tr), np.sqrt(2*loss_te)
+        case "mean sqrt sgd":
+            w, loss_tr = mean_squared_error_sgd(y_tr, x_tr, initial_w, max_iters, gamma)
+            loss_te = MSE_loss(y_te,x_te,w)
+            return np.sqrt(2 * loss_tr), np.sqrt(2*loss_te)
+        case "least square":
+            w, loss_tr = least_squares(y_tr, x_tr)
+            loss_te = MSE_loss(y_te, x_te, w)
+            return np.sqrt(2 * loss_tr), np.sqrt(2*loss_te)
+        case "ridge regression":
+            w, loss_tr = ridge_regression(y_tr, x_tr, lambda_)
+            loss_te = MSE_loss(y_te, x_te, w)
+            return np.sqrt(2 * loss_tr), np.sqrt(2*loss_te)
+        case "logistic regression":
+            w, loss_tr = logistic_regression(y_tr, x_tr, initial_w, max_iters, gamma)
+            loss_te = loss_logistic(y_te,x_te,w)
+            return np.sqrt(2 * loss_tr), np.sqrt(2*loss_te)
+        case "reg logistic regression":
+            w, loss_tr = reg_logistic_regression(y_tr, x_tr, lambda_, initial_w, max_iters, gamma)
+            loss_te = loss_logistic(y_te, x_te, w)
+            return np.sqrt(2 * loss_tr), np.sqrt(2*loss_te)
+        case _ :
+            raise ValueError("Function not recognized, choose between: mean sqrt, mean sqrt sgd, " \
+            "least square, ridge regression, logistic regression, reg logistic regression")
+        
+def cross_validation(y, x,k_fold,lambda_, function_name, initial_w, max_iters, gamma,degree=0):
+    seed = 12
+    # split data in k fold
+    k_indices = build_k_indices(y, k_fold, seed)
+    
+    for k in range(k_fold):
+        loss_tr, loss_te = cross_validation_one_step(y,x,k_indices,k,lambda_,function_name,initial_w,max_iters,gamma,degree)
+        loss_tr_avg += loss_tr
+        loss_te_avg += loss_te
+    loss_tr_avg /= k_fold
+    loss_te_avg /= k_fold
+    return loss_tr_avg, loss_te_avg
+    
+
+
+
 

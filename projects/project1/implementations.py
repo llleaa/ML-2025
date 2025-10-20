@@ -1,4 +1,6 @@
 ## File in which we do the functions
+import copy
+
 import numpy as np
 
 
@@ -54,7 +56,7 @@ def gradient_descent(y, tx, w, max_iters, gamma, gradient=gradient, loss = MSE_l
 
     for i in range(max_iters):
         w = w - gamma * gradient(y, tx, w) + lambda_ * w
-        if i % 100 == 0:
+        if i % 1000 == 0:
             print(f"Iter no {i} loss : {loss(y, tx, w)}")
     return w
 
@@ -65,7 +67,7 @@ def stochastic_gradient_descent(y, tx, w, max_iters, gamma, batch_size, gradient
     
     for i in range(max_iters):
         w = w - gamma * gradient(y, tx, w, batch_size=batch_size) + lambda_ * w
-        if i % 100 == 0:
+        if i % 1000 == 0:
             print(f"Iter no {i} loss : {loss(y, tx, w)}")
 
     return w
@@ -86,7 +88,7 @@ def adam(y, tx, w, max_iters, gamma, beta1 = 0.9, beta2 = 0.999, gradient=gradie
         previous_ema = ema
         previous_ema_sq = ema_sq
         
-        if i % 100 == 0:
+        if i % 1000 == 0:
             print(f"Iter no {i} loss : {loss(y, tx, w)}")
 
     return w
@@ -185,7 +187,11 @@ def sigmoid(t):
     Returns:
         sigmoid : scalar or numpy array
     """
-    return 1/(1 + np.exp(-t))
+
+    return clamp_between_0_and_1(1/(1 + np.exp(-t)))
+
+def clamp_between_0_and_1(t):
+    return np.maximum(np.minimum(t, 1-1e-12), 1e-12)
 
 def loss_logistic(y, tx, w):
     """compute the cost by negative log likelihood.
@@ -200,7 +206,8 @@ def loss_logistic(y, tx, w):
     """
     assert y.shape[0] == tx.shape[0]
     assert tx.shape[1] == w.shape[0]
-    return (-1/y.shape[0]) * np.sum(y*np.log(sigmoid(tx@w)) + (1-y)*np.log(1 - sigmoid(tx@w)))
+
+    return -np.sum(y*np.log(sigmoid(tx@w)) + (1-y)*np.log(1 - sigmoid(tx@w))) / y.shape[0]
 
 
 def gradient_logistic(y, tx, w):
@@ -318,7 +325,7 @@ def build_k_indices(y, k_fold, seed):
     k_indices = [indices[k * interval : (k + 1) * interval] for k in range(k_fold)]
     return np.array(k_indices)
 
-def cross_validation_one_step(y, x, k_indices, k, lambda_, function_name, initial_w, max_iters, gamma,degree):
+def cross_validation_one_step(y, x, k_indices, k, lambda_, function_name, initial_w, max_iters, gamma):
     """return the loss of ridge regression for a fold corresponding to k_indices (one step)
 
     Args:
@@ -337,7 +344,7 @@ def cross_validation_one_step(y, x, k_indices, k, lambda_, function_name, initia
     train_indices = [i for i in range(k_indices.shape[0]) if i != k]
     y_tr, x_tr = y[k_indices[train_indices].flatten()], x[k_indices[train_indices].flatten()]
     y_te, x_te = y[k_indices[k].flatten()], x[k_indices[k].flatten()]
-    
+
     match function_name :
         case "mean sqrt":
            w, loss_tr = mean_squared_error_gd(y_tr, x_tr, initial_w, max_iters, gamma)
@@ -363,19 +370,27 @@ def cross_validation_one_step(y, x, k_indices, k, lambda_, function_name, initia
             w, loss_tr = reg_logistic_regression(y_tr, x_tr, lambda_, initial_w, max_iters, gamma)
             loss_te = loss_logistic(y_te, x_te, w)
             return np.sqrt(2 * loss_tr), np.sqrt(2*loss_te)
+        case "logistic regression adam":
+            w, loss_tr = logistic_regression_adam(y_tr, x_tr, initial_w, max_iters, gamma)
+            loss_te = loss_logistic(y_te,x_te,w)
+            return np.sqrt(2 * loss_tr), np.sqrt(2*loss_te)
+
         case _ :
             raise ValueError("Function not recognized, choose between: mean sqrt, mean sqrt sgd, " \
             "least square, ridge regression, logistic regression, reg logistic regression")
         
-def cross_validation(y, x,k_fold,lambda_, function_name, initial_w, max_iters, gamma,degree=0):
-    seed = 12
+def cross_validation(y, x,k_fold,lambda_, function_name, initial_w, max_iters, gamma):
+    seed = 20
     # split data in k fold
     k_indices = build_k_indices(y, k_fold, seed)
-    
+    loss_tr_avg = 0
+    loss_te_avg = 0
+
     for k in range(k_fold):
-        loss_tr, loss_te = cross_validation_one_step(y,x,k_indices,k,lambda_,function_name,initial_w,max_iters,gamma,degree)
+        loss_tr, loss_te = cross_validation_one_step(y,x,k_indices,k,lambda_,function_name,copy.deepcopy(initial_w),max_iters,gamma)
         loss_tr_avg += loss_tr
         loss_te_avg += loss_te
+        print(f"Test loss for trial no {k} : {loss_te}")
     loss_tr_avg /= k_fold
     loss_te_avg /= k_fold
     return loss_tr_avg, loss_te_avg

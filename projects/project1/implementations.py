@@ -143,6 +143,32 @@ def mean_squared_error_sgd(y, tx, initial_w, max_iters, gamma):
 
     return w, MSE_loss(y, tx, w)
 
+def mean_squared_error_adam(y, tx, initial_w, max_iters, gamma):
+    """Perform stochastic gradient descent using the MSE loss function.
+
+    Args:
+        y: numpy array of shape=(N, ).
+            The vector of target values.
+        tx: numpy array of shape=(N, D).
+            The matrix of input features.
+        initial_w: numpy array of shape=(D, ).
+            The initial weight vector.
+        max_iters: int.
+            The maximum number of iterations to run the stochastic gradient descent algorithm.
+        gamma: float.
+            The learning rate used to update the weights.
+
+    Returns:
+        w: numpy array of shape=(D, ).
+            The optimized weight vector after performing stochastic gradient descent.
+        loss: float.
+            The final value of the MSE loss function corresponding to the optimized weights.
+    """
+
+    w = adam(y, tx, initial_w, max_iters, gamma, gradient=gradient, loss=MSE_loss)
+
+    return w, MSE_loss(y, tx, w)
+
 
 def least_squares(y, tx):
     """Calculate the least squares solution.
@@ -155,8 +181,7 @@ def least_squares(y, tx):
         w: optimal weights, numpy array of shape(D,), D is the number of features.
         loss: scalar.
     """
-
-    w = np.linalg.solve(tx.T @ tx, tx.T @ y)
+    w = np.linalg.lstsq(tx.T @ tx, tx.T @ y)[0]
     loss = MSE_loss(y, tx, w)
     return w, loss
 
@@ -363,6 +388,11 @@ def cross_validation_one_step(y, x, k_indices, k, lambda_, function_name, initia
             w, loss_tr = reg_logistic_regression(y_tr, x_tr, lambda_, initial_w, max_iters, gamma)
             loss_te = loss_logistic(y_te, x_te, w)
             return np.sqrt(2 * loss_tr), np.sqrt(2*loss_te)
+        case "mean sqrt adam":
+            w, loss_tr = mean_squared_error_adam(y_tr, x_tr, initial_w, max_iters, gamma)
+            loss_te = MSE_loss(y_te, x_te, w)
+            return np.sqrt(2 * loss_tr), np.sqrt(2*loss_te)
+        
         case _ :
             raise ValueError("Function not recognized, choose between: mean sqrt, mean sqrt sgd, " \
             "least square, ridge regression, logistic regression, reg logistic regression")
@@ -371,7 +401,9 @@ def cross_validation(y, x,k_fold,lambda_, function_name, initial_w, max_iters, g
     seed = 12
     # split data in k fold
     k_indices = build_k_indices(y, k_fold, seed)
-    
+    loss_tr_avg = 0
+    loss_te_avg = 0
+
     for k in range(k_fold):
         loss_tr, loss_te = cross_validation_one_step(y,x,k_indices,k,lambda_,function_name,initial_w,max_iters,gamma,degree)
         loss_tr_avg += loss_tr

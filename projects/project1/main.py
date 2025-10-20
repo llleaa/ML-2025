@@ -24,7 +24,7 @@ if __name__ == '__main__':
     inds = np.where(np.isnan(x_train))
     x_train[inds] = np.take(col_mean, inds[1])
 
-    x_train = imp.build_poly(x_train, degree=3)
+    #x_train = imp.build_poly(x_train, degree=3)
 
     # Normalization
     mean = np.nanmean(x_train, axis=0)
@@ -36,9 +36,10 @@ if __name__ == '__main__':
 
     initial_w = np.random.randn(x_train.shape[1])
 
-    #w, final_loss  = imp.mean_squared_error_gd(y_train, x_train, initial_w, max_iters=500, gamma=0.01)
-    loss_tr, loss_te = imp.cross_validation(y_train,x_train,k_fold=100,lambda_=10,function_name="mean sqrt",initial_w= initial_w,max_iters=1000,gamma=0.01, degree = 3)
+    #w, final_loss  = imp.least_squares(y_train, x_train)
+    loss_tr, loss_te = imp.cross_validation(y_train,x_train,k_fold=5,lambda_=10,function_name="ridge regression",initial_w= initial_w,max_iters=1000,gamma=0.01, degree = 3)
 
+    #print(final_loss)
     print("Test loss :", loss_te)
     print("Training loss:", loss_tr)
 

@@ -55,8 +55,8 @@ def gradient_descent(y, tx, w, max_iters, gamma, gradient=gradient, loss = MSE_l
     """
 
     for i in range(max_iters):
-        w = w - gamma * gradient(y, tx, w) + lambda_ * w
-        if i % 1000 == 0:
+        w = w - gamma *( gradient(y, tx, w) + lambda_ * w)
+        if i % 999 == 0:
             print(f"Iter no {i} loss : {loss(y, tx, w)}")
     return w
 
@@ -369,6 +369,7 @@ def cross_validation_one_step(y, x, k_indices, k, lambda_, function_name, initia
     train_indices = [i for i in range(k_indices.shape[0]) if i != k]
     y_tr, x_tr = y[k_indices[train_indices].flatten()], x[k_indices[train_indices].flatten()]
     y_te, x_te = y[k_indices[k].flatten()], x[k_indices[k].flatten()]
+
 
     match function_name :
         case "mean sqrt":

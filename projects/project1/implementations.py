@@ -56,8 +56,8 @@ def gradient_descent(y, tx, w, max_iters, gamma, gradient=gradient, loss = MSE_l
 
     for i in range(max_iters):
         w = w - gamma *( gradient(y, tx, w) + lambda_ * w)
-        if i % 999 == 0:
-            print(f"Iter no {i} loss : {loss(y, tx, w)}")
+        # if i % 999 == 0:
+        #     print(f"Iter no {i} loss : {loss(y, tx, w)}")
     return w
 
 def stochastic_gradient_descent(y, tx, w, max_iters, gamma, batch_size, gradient=gradient, loss = MSE_loss, lambda_ = 0):
@@ -66,9 +66,9 @@ def stochastic_gradient_descent(y, tx, w, max_iters, gamma, batch_size, gradient
     """
     
     for i in range(max_iters):
-        w = w - gamma * gradient(y, tx, w, batch_size=batch_size) + lambda_ * w
-        if i % 1000 == 0:
-            print(f"Iter no {i} loss : {loss(y, tx, w)}")
+        w = w - gamma * (gradient(y, tx, w, batch_size=batch_size) + lambda_ * w)
+        # if i % 1000 == 0:
+        #     print(f"Iter no {i} loss : {loss(y, tx, w)}")
 
     return w
 
@@ -88,8 +88,8 @@ def adam(y, tx, w, max_iters, gamma, beta1 = 0.9, beta2 = 0.999, gradient=gradie
         previous_ema = ema
         previous_ema_sq = ema_sq
         
-        if i % 1000 == 0:
-            print(f"Iter no {i} loss : {loss(y, tx, w)}")
+        # if i % 1000 == 0:
+        #     print(f"Iter no {i} loss : {loss(y, tx, w)}")
 
     return w
 
@@ -302,7 +302,7 @@ def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma):
         loss: scalar number
         
     """
-    w = gradient_descent(y, tx, initial_w, max_iters, gamma, gradient=logistic_regression, loss=loss_logistic, lambda_=lambda_)
+    w = gradient_descent(y, tx, initial_w, max_iters, gamma, gradient=gradient_logistic, loss=loss_logistic, lambda_=lambda_)
 
     return w, loss_logistic(y, tx, w)
 
@@ -375,36 +375,36 @@ def cross_validation_one_step(y, x, k_indices, k, lambda_, function_name, initia
         case "mean sqrt":
            w, loss_tr = mean_squared_error_gd(y_tr, x_tr, initial_w, max_iters, gamma)
            loss_te = MSE_loss(y_te,x_te,w)
-           return np.sqrt(2 * loss_tr), np.sqrt(2*loss_te)
+           return np.sqrt(2 * loss_tr), np.sqrt(2*loss_te), f1_and_accuracy(x_tr, x_te, y_tr,y_te,w)
         case "mean sqrt sgd":
             w, loss_tr = mean_squared_error_sgd(y_tr, x_tr, initial_w, max_iters, gamma)
             loss_te = MSE_loss(y_te,x_te,w)
-            return np.sqrt(2 * loss_tr), np.sqrt(2*loss_te)
+            return np.sqrt(2 * loss_tr), np.sqrt(2*loss_te),f1_and_accuracy(x_tr, x_te, y_tr,y_te,w)
         case "least square":
             w, loss_tr = least_squares(y_tr, x_tr)
             loss_te = MSE_loss(y_te, x_te, w)
-            return np.sqrt(2 * loss_tr), np.sqrt(2*loss_te)
+            return np.sqrt(2 * loss_tr), np.sqrt(2*loss_te),f1_and_accuracy(x_tr, x_te, y_tr,y_te,w)
         case "ridge regression":
             w, loss_tr = ridge_regression(y_tr, x_tr, lambda_)
             loss_te = MSE_loss(y_te, x_te, w)
-            return np.sqrt(2 * loss_tr), np.sqrt(2*loss_te)
+            return np.sqrt(2 * loss_tr), np.sqrt(2*loss_te),f1_and_accuracy(x_tr, x_te, y_tr,y_te,w)
         case "logistic regression":
             w, loss_tr = logistic_regression(y_tr, x_tr, initial_w, max_iters, gamma)
             loss_te = loss_logistic(y_te,x_te,w)
-            return np.sqrt(2 * loss_tr), np.sqrt(2*loss_te)
+            return np.sqrt(2 * loss_tr), np.sqrt(2*loss_te),f1_and_accuracy(x_tr, x_te, y_tr,y_te,w)
         case "reg logistic regression":
             w, loss_tr = reg_logistic_regression(y_tr, x_tr, lambda_, initial_w, max_iters, gamma)
             loss_te = loss_logistic(y_te, x_te, w)
-            return np.sqrt(2 * loss_tr), np.sqrt(2*loss_te)
+            return np.sqrt(2 * loss_tr), np.sqrt(2*loss_te),f1_and_accuracy(x_tr, x_te, y_tr,y_te,w)
         case "logistic regression adam":
             w, loss_tr = logistic_regression_adam(y_tr, x_tr, initial_w, max_iters, gamma)
             loss_te = loss_logistic(y_te,x_te,w)
-            return np.sqrt(2 * loss_tr), np.sqrt(2*loss_te)
+            return np.sqrt(2 * loss_tr), np.sqrt(2*loss_te),f1_and_accuracy(x_tr, x_te, y_tr,y_te,w)
 
         case "mean sqrt adam":
             w, loss_tr = mean_squared_error_adam(y_tr, x_tr, initial_w, max_iters, gamma)
             loss_te = MSE_loss(y_te, x_te, w)
-            return np.sqrt(2 * loss_tr), np.sqrt(2*loss_te)
+            return np.sqrt(2 * loss_tr), np.sqrt(2*loss_te),f1_and_accuracy(x_tr, x_te, y_tr,y_te,w)
         
         case _ :
             raise ValueError("Function not recognized, choose between: mean sqrt, mean sqrt sgd, " \
@@ -416,17 +416,82 @@ def cross_validation(y, x,k_fold,lambda_, function_name, initial_w, max_iters, g
     k_indices = build_k_indices(y, k_fold, seed)
     loss_tr_avg = 0
     loss_te_avg = 0
+    acc_tr_avg = 0
+    acc_te_avg = 0
+    f1_tr_avg = 0 
+    f1_te_avg = 0
 
     for k in range(k_fold):
-        loss_tr, loss_te = cross_validation_one_step(y,x,k_indices,k,lambda_,function_name,copy.deepcopy(initial_w),max_iters,gamma)
+        loss_tr, loss_te, f1_and_acc  = cross_validation_one_step(y,x,k_indices,k,lambda_,function_name,copy.deepcopy(initial_w),max_iters,gamma)
         loss_tr_avg += loss_tr
         loss_te_avg += loss_te
-        print(f"Test loss for trial no {k} : {loss_te}")
+        acc_tr_avg += f1_and_acc[0]
+        acc_te_avg += f1_and_acc[1]
+        f1_tr_avg += f1_and_acc[2]
+        f1_te_avg += f1_and_acc[3]
+        #print(f"Test loss for trial no {k} : {loss_te}")
     loss_tr_avg /= k_fold
     loss_te_avg /= k_fold
-    return loss_tr_avg, loss_te_avg
-    
+    acc_tr_avg /= k_fold
+    acc_te_avg /= k_fold
+    f1_tr_avg /= k_fold
+    f1_te_avg /= k_fold
+    return loss_tr_avg, loss_te_avg, acc_tr_avg, acc_te_avg, f1_tr_avg, f1_te_avg
 
+def compute_accuracy(y_true, y_pred, threshold=0.5):
+    """Compute accuracy for binary classification."""
+    y_pred_binary = np.where(y_pred >= threshold, 0, 1)
+    return np.mean(y_pred_binary == y_true)
+    
+def f1_score(y_true, y_pred_binary):
+    """Compute F1 score using.
+    
+    y_true: (N,) array of true binary labels {0,1}
+    y_pred_binary: (N,) array of predicted binary labels {0,1}
+    """
+    y_true = y_true.flatten()
+    y_pred_binary = y_pred_binary.flatten()
+    
+    tp = np.sum((y_true == 1) & (y_pred_binary == 1))
+    fp = np.sum((y_true == 0) & (y_pred_binary == 1))
+    fn = np.sum((y_true == 1) & (y_pred_binary == 0))
+
+    if tp + fp == 0 or tp + fn == 0:
+        return 0.0  
+
+    precision = tp / (tp + fp)
+    recall = tp / (tp + fn)
+
+    if precision + recall == 0:
+        return 0.0
+
+    f1 = 2 * precision * recall / (precision + recall)
+    return f1
+
+def f1_and_accuracy(x_tr, x_te, y_tr,y_te,w):
+    p_tr = sigmoid(x_tr @ w)
+    p_te = sigmoid(x_te @ w)
+
+    best_f1, best_thr = 0, 0
+
+    for thr in np.linspace(0.05, 0.95, 19):
+        y_pred = np.where(p_te >= thr,0,1)
+        f1 = f1_score(y_te, y_pred)
+        if f1 > best_f1:
+            best_f1, best_thr = f1, thr
+    print("Best threshold:", best_thr, "Best F1:", best_f1)
+
+    # Binary predictions
+    y_tr_pred = np.where(p_tr >= best_thr,0,1)
+    y_te_pred = np.where(p_te >= best_thr,0,1)
+
+    acc_tr = compute_accuracy(y_tr, p_tr)
+    acc_te = compute_accuracy(y_te, p_te)
+
+    f1_tr = f1_score(y_tr, y_tr_pred)
+    f1_te = f1_score(y_te, y_te_pred)
+
+    return acc_tr, acc_te, f1_tr, f1_te
 
 
 

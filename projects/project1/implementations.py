@@ -496,103 +496,82 @@ def f1_and_accuracy(x_tr, x_te, y_tr,y_te,w):
 
 def preprocess_columns(x_tr, x_te):
 
-    x_tr, x_te = replace_column_with(x_tr, x_te, 7, [1100], 1)
-    x_tr, x_te = replace_column_with(x_tr, x_te, 7, [2200], 2)
-    x_tr, x_te = replace_column_with(x_tr, x_te, 14, [np.nan], 2)
-    x_tr, x_te = replace_column_with(x_tr, x_te, 25, [np.nan], 1)
-    x_tr, x_te = replace_column_with(x_tr, x_te, 25, [7,9], np.nan)
-    x_tr, x_te = replace_column_with(x_tr, x_te, 26, [77,99], np.nan)
-    x_tr, x_te = replace_column_with(x_tr, x_te, 27, [7,9], np.nan)
-    x_tr, x_te = replace_column_with(x_tr, x_te, 28, [77,99], np.nan)
-    x_tr, x_te = replace_column_with(x_tr, x_te, 28, [88], 0)
-    x_tr, x_te = replace_column_with(x_tr, x_te, 29, [77,99], np.nan)
-    x_tr, x_te = replace_column_with(x_tr, x_te, 29, [88], 0)
-    x_tr, x_te = replace_column_with(x_tr, x_te, 30, [77,99], np.nan)
-    x_tr, x_te = replace_column_with(x_tr, x_te, 30, [88,np.nan], 0)
-    x_tr, x_te = replace_column_with(x_tr, x_te, 31, [7,9], np.nan)
-    x_tr, x_te = replace_column_with(x_tr, x_te, 32, [7,9], np.nan)
-    x_tr, x_te = replace_column_with(x_tr, x_te, 32, [3], 0)
-    x_tr, x_te = replace_column_with(x_tr, x_te, 33, [7,9], np.nan)
-    x_tr, x_te = replace_column_with(x_tr, x_te, 34, [7,9], np.nan)
-    x_tr, x_te = replace_column_with(x_tr, x_te, 35, [7,9], np.nan)
-    x_tr, x_te = replace_column_with(x_tr, x_te, 35, [4], 1.5)
-    x_tr, x_te = replace_column_with(x_tr, x_te, 36, [np.nan], 2)
-    x_tr, x_te = replace_column_with(x_tr, x_te, 36, [7,9], np.nan)
-    x_tr, x_te = replace_column_with(x_tr, x_te, 37, [7,9], np.nan)
-    x_tr, x_te = replace_column_with(x_tr, x_te, 38, [np.nan], 5)
-    x_tr, x_te = replace_column_with(x_tr, x_te, 38, [7,9], np.nan)
-    x_tr, x_te = replace_column_with(x_tr, x_te, 39, [np.nan], 2)
-    x_tr, x_te = replace_column_with(x_tr, x_te, 39, [7,9], np.nan)
-    x_tr, x_te = replace_column_with(x_tr, x_te, 40, [7,9], np.nan)
-    x_tr, x_te = replace_column_with(x_tr, x_te, 41, [7,9], np.nan)
-    x_tr, x_te = replace_column_with(x_tr, x_te, 42, [np.nan], 2)
-    x_tr, x_te = replace_column_with(x_tr, x_te, 42, [7,9], np.nan)
-    x_tr, x_te = replace_column_with(x_tr, x_te, 43, [7,9], np.nan)
-    x_tr, x_te = replace_column_with(x_tr, x_te, 44, [7,9], np.nan)
-    x_tr, x_te = replace_column_with(x_tr, x_te, 45, [7,9], np.nan)
-    x_tr, x_te = replace_column_with(x_tr, x_te, 46, [7,9], np.nan)
-    x_tr, x_te = replace_column_with(x_tr, x_te, 47, [7,9], np.nan)
-    x_tr, x_te = replace_column_with(x_tr, x_te, 48, [7,9], np.nan)
-    x_tr, x_te = replace_column_with(x_tr, x_te, 49, [7,9], np.nan)
-    x_tr, x_te = replace_column_with(x_tr, x_te, 49, [4], 2)
-    x_tr, x_te = replace_column_with(x_tr, x_te, 50, [98,99], np.nan)
-    x_tr, x_te = replace_column_with(x_tr, x_te, 52, [9], np.nan)
-    x_tr, x_te = replace_column_with(x_tr, x_te, 53, [9], np.nan)
-    x_tr, x_te = replace_column_with(x_tr, x_te, 54, [7,9], np.nan)
-    x_tr, x_te = replace_column_with(x_tr, x_te, 55, [7,9], np.nan)
-    x_tr, x_te = replace_column_with(x_tr, x_te, 56, [7,9], np.nan)
-    x_tr, x_te = replace_column_with(x_tr, x_te, 57, [np.nan], 1)
-    x_tr, x_te = replace_column_with(x_tr, x_te, 57, [7,9], np.nan)
-    x_tr, x_te = replace_column_with(x_tr, x_te, 58, [7,9], np.nan)
-    x_tr, x_te = replace_column_with(x_tr, x_te, 59, [9], np.nan)
-    x_tr, x_te = replace_column_with(x_tr, x_te, 60, [88], 0)
-    x_tr, x_te = replace_column_with(x_tr, x_te, 60, [99], np.nan)
-    x_tr, x_te = replace_column_with(x_tr, x_te, 61, [77,99], np.nan)
-    x_tr, x_te = replace_column_with(x_tr, x_te, 62, [7,9], np.nan)
-    x_tr, x_te = replace_column_with(x_tr, x_te, 65, [np.nan], 2)
-    x_tr, x_te = replace_column_with(x_tr, x_te, 65, [7,9], np.nan)
-    x_tr, x_te = replace_column_with(x_tr, x_te, 66, [7,9], np.nan)
-    x_tr, x_te = replace_column_with(x_tr, x_te, 67, [7,9], np.nan)
-    x_tr, x_te = replace_column_with(x_tr, x_te, 68, [7,9], np.nan)
-    x_tr, x_te = replace_column_with(x_tr, x_te, 69, [7,9], np.nan)
-    x_tr, x_te = replace_column_with(x_tr, x_te, 70, [7,9], np.nan)
-    x_tr, x_te = replace_column_with(x_tr, x_te, 71, [7,9], np.nan)
-    x_tr, x_te = replace_column_with(x_tr, x_te, 72, [7,9], np.nan)
-    x_tr, x_te = replace_column_with(x_tr, x_te, 73, [7,9], np.nan)
-    x_tr, x_te = replace_column_with(x_tr, x_te, 74, [np.nan], 3)
-    x_tr, x_te = replace_column_with(x_tr, x_te, 74, [7,9], np.nan)
-    x_tr, x_te = replace_column_with(x_tr, x_te, 75, [np.nan], 0)
-    x_tr, x_te = replace_column_with(x_tr, x_te, 75, [7,9], np.nan)
-    x_tr, x_te = replace_column_with(x_tr, x_te, 76, [np.nan], 0)
-    x_tr, x_te = replace_column_with(x_tr, x_te, 76, [77,99], np.nan)
-    x_tr, x_te = replace_column_with(x_tr, x_te, 77, [7,9], np.nan)
-    x_tr, x_te = replace_column_with(x_tr, x_te, 79, [np.nan], 0)
-    x_tr, x_te = replace_column_with(x_tr, x_te, 79, [77,99], np.nan)
-    x_tr, x_te = replace_column_with(x_tr, x_te, 80, [88,np.nan], 0)
-    x_tr, x_te = replace_column_with(x_tr, x_te, 80, [77,99], np.nan)
-    x_tr, x_te = replace_column_with(x_tr, x_te, 81, [np.nan], 0)
-    x_tr, x_te = replace_column_with(x_tr, x_te, 81, [77,99], np.nan)
-    x_tr, x_te = replace_column_with(x_tr, x_te, 88, [7,9], np.nan)
-    x_tr, x_te = replace_column_with(x_tr, x_te, 89, [77,88,99], np.nan)
-    x_tr, x_te = replace_column_with(x_tr, x_te, 96, [np.nan], 2)
-    x_tr, x_te = replace_column_with(x_tr, x_te, 96, [7,9], np.nan)
-    x_tr, x_te = replace_column_with(x_tr, x_te, 97, [np.nan], 2)
-    x_tr, x_te = replace_column_with(x_tr, x_te, 97, [7,9], np.nan)
-    x_tr, x_te = replace_column_with(x_tr, x_te, 98, [np.nan], 3)
-    x_tr, x_te = replace_column_with(x_tr, x_te, 98, [7,9], np.nan)
-    x_tr, x_te = replace_column_with(x_tr, x_te, 99, [np.nan], 0)
-    x_tr, x_te = replace_column_with(x_tr, x_te, 99, [7,9], np.nan)
-    x_tr, x_te = replace_column_with(x_tr, x_te, 100, [7,9], np.nan)
-    x_tr, x_te = replace_column_with(x_tr, x_te, 101, [7,9], np.nan)
-    x_tr, x_te = replace_column_with(x_tr, x_te, 104, [7,9], np.nan)
-    x_tr, x_te = replace_column_with(x_tr, x_te, 105, [7,9], np.nan)
-    x_tr, x_te = replace_column_with(x_tr, x_te, 108, [np.nan], 2)
-    x_tr, x_te = replace_column_with(x_tr, x_te, 108, [7,9], np.nan)
-    x_tr, x_te = replace_column_with(x_tr, x_te, 109, [np.nan], 3)
-    x_tr, x_te = replace_column_with(x_tr, x_te, 109, [7,9], np.nan)
-    x_tr, x_te = replace_column_with(x_tr, x_te, 110, [np.nan], 2)
-    x_tr, x_te = replace_column_with(x_tr, x_te, 110, [7,9], np.nan)
-
+    x_tr, x_te = replace_column_with(x_tr, x_te, [7], [1100], 1)
+    x_tr, x_te = replace_column_with(x_tr, x_te, [7], [2200], 2)
+    x_tr, x_te = replace_column_with(x_tr, x_te, [32], [3], 0)
+    x_tr, x_te = replace_column_with(x_tr, x_te, [35], [4], 1.5)
+    x_tr, x_te = replace_column_with(x_tr, x_te, [49], [4], 2)
+    x_tr, x_te = replace_column_with(x_tr, x_te, [119], [8], 1)
+    x_tr, x_te = replace_column_with(x_tr, x_te, [228], [9], 3)
+    x_tr, x_te = replace_column_with(x_tr, x_te, [232], [9], 2)
+    x_tr, x_te = replace_column_with(x_tr, x_te, [146], [97], 5)
+    x_tr, x_te = replace_column_with(x_tr, x_te, [196,198], [98], 0)
+    x_tr, x_te = replace_column_with(x_tr, x_te, [134,183],
+                                     [7,9,np.nan], 3)
+    x_tr, x_te = replace_column_with(x_tr, x_te, [135,136,147],
+                                     [7,np.nan], 2)
+    x_tr, x_te = replace_column_with(x_tr, x_te, [202],
+                                     [7,9,np.nan], 7)
+    x_tr, x_te = replace_column_with(x_tr, x_te, [172,174,176,179,181,184,189],
+                                     [7,9,np.nan], 6)
+    x_tr, x_te = replace_column_with(x_tr, x_te, [138,139,141],
+                                     [7,9,np.nan], 5)
+    x_tr, x_te = replace_column_with(x_tr, x_te, [124,125,158,161,162,164,165,166,171,173,175,177,178,180,182,
+                                                  185,186,187,188,204],
+                                     [7,9,np.nan], 2)
+    x_tr, x_te = replace_column_with(x_tr, x_te, [121,122,156,157,201,],
+                                     [7,9,np.nan], 0)
+    x_tr, x_te = replace_column_with(x_tr, x_te, [148,149,150],
+                                     [88,98,99,np.nan], 0)
+    x_tr, x_te = replace_column_with(x_tr, x_te, [169],
+                                     [77,99,np.nan], 0)
+    x_tr, x_te = replace_column_with(x_tr, x_te, [151],
+                                     [888,np.nan], 0)
+    x_tr, x_te = replace_column_with(x_tr, x_te, [152,153,154,155],
+                                     [8,np.nan], 0)
+    x_tr, x_te = replace_column_with(x_tr, x_te, [116],
+                                     [np.nan], 8)
+    x_tr, x_te = replace_column_with(x_tr, x_te, [219],
+                                     [np.nan], 6)
+    x_tr, x_te = replace_column_with(x_tr, x_te, [38],
+                                     [np.nan], 5)
+    x_tr, x_te = replace_column_with(x_tr, x_te, [167],
+                                     [np.nan], 4)
+    x_tr, x_te = replace_column_with(x_tr, x_te, [74,98,109],
+                                     [np.nan], 3)
+    x_tr, x_te = replace_column_with(x_tr, x_te, [14,36,39,42,65,96,97,108,110,117,118],
+                                     [np.nan], 2)
+    x_tr, x_te = replace_column_with(x_tr, x_te, [25,57],
+                                     [np.nan], 1)
+    x_tr, x_te = replace_column_with(x_tr, x_te, [30,75,76,79,80,81,99,113,114,115,163],
+                                     [np.nan], 0)
+    x_tr, x_te = replace_column_with(x_tr, x_te, [28,29,30,60,80,113,114,115,207,208,209,210,211,212,213,214],
+                                     [88], 0)
+    x_tr, x_te = replace_column_with(x_tr, x_te, [193,194], [8], np.nan)
+    x_tr, x_te = replace_column_with(x_tr, x_te, [247], [14], np.nan)
+    x_tr, x_te = replace_column_with(x_tr, x_te, [248], [3], np.nan)
+    x_tr, x_te = replace_column_with(x_tr, x_te, [89,113,114,115], [88], np.nan)
+    x_tr, x_te = replace_column_with(x_tr, x_te, [50,146], [98,99], np.nan)
+    x_tr, x_te = replace_column_with(x_tr, x_te, [196,198], [97], np.nan)
+    x_tr, x_te = replace_column_with(x_tr, x_te, [60,196,198], [99], np.nan)
+    x_tr, x_te = replace_column_with(x_tr, x_te, [263], [900], np.nan)
+    x_tr, x_te = replace_column_with(x_tr, x_te, [265,288,289,294,295,298], [99900], np.nan)
+    x_tr, x_te = replace_column_with(x_tr, x_te, [253], [99999], np.nan)
+    x_tr, x_te = replace_column_with(x_tr, x_te, [52,53,59,231,233,234,235,236,237,238,242,243,244,245,256,257,
+                                                  258,259,260,261,262,264,266,279,280,285,299,306,307,308,309,310,311,
+                                                  312,313,314,315,316,317,318,319,320,321],
+                                     [9], np.nan)
+    x_tr, x_te = replace_column_with(x_tr, x_te, [25,27,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,
+                                                  49,54,55,56,57,58,62,65,66,67,68,69,70,71,72,73,74,75,77,88,96,97,98,
+                                                  99,100,101,104,105,108,109,110,116,117,118,119,127,128,129,130,132,133,
+                                                  137,140,142,143,145,152,153,154,155,159,160,163,167,168,170,193,194,
+                                                  199,200,203,205,206,215,216,224],
+                                     [7,9], np.nan)
+    x_tr, x_te = replace_column_with(x_tr, x_te, [26,28,29,30,61,76,79,80,81,89,113,114,115,131,207,208,209,210,
+                                                  211,212,213,214,225,226],
+                                     [77,99], np.nan)
+    x_tr, x_te = replace_column_with(x_tr, x_te, [151,240,241],
+                                     [777,999], np.nan)
 
 
     col_mean = np.nanmean(x_tr, axis=0)
@@ -601,18 +580,22 @@ def preprocess_columns(x_tr, x_te):
     inds = np.where(np.isnan(x_te))
     x_te[inds] = np.take(col_mean, inds[1])
 
+    for col in sorted([230,229,227,223,222,221,220,192,191,106,102,64,63,23,20,19,13,12,10,9,8,3])[::-1]:
+        x_tr = np.delete(x_tr, col, 1)
+        x_te = np.delete(x_te, col, 1)
 
     return x_tr, x_te
 
-def replace_column_with(array1, array2, column, values_to_replace, value_to_replace_with):
-    for value_to_replace in values_to_replace:
-        if np.isnan(value_to_replace):
-            itemindex1 = np.where(np.isnan(array1[:, column]))
-            itemindex2 = np.where(np.isnan(array2[:, column]))
-        else:
-            itemindex1 = np.where((array1[:, column] == value_to_replace))
-            itemindex2 = np.where((array2[:, column] == value_to_replace))
-        array1[itemindex1, column] = value_to_replace_with
-        array2[itemindex2, column] = value_to_replace_with
+def replace_column_with(array1, array2, columns, values_to_replace, value_to_replace_with):
+    for column in columns:
+        for value_to_replace in values_to_replace:
+            if np.isnan(value_to_replace):
+                itemindex1 = np.where(np.isnan(array1[:, column]))
+                itemindex2 = np.where(np.isnan(array2[:, column]))
+            else:
+                itemindex1 = np.where((array1[:, column] == value_to_replace))
+                itemindex2 = np.where((array2[:, column] == value_to_replace))
+            array1[itemindex1, column] = value_to_replace_with
+            array2[itemindex2, column] = value_to_replace_with
     return array1,array2
 

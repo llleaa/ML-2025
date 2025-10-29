@@ -365,10 +365,11 @@ def cross_validation_one_step(y, x, k_indices, k, lambda_, function_name, initia
         train and test root mean square errors rmse = sqrt(2 mse)
 
     """
-
+    
     train_indices = [i for i in range(k_indices.shape[0]) if i != k]
     y_tr, x_tr = y[k_indices[train_indices].flatten()], x[k_indices[train_indices].flatten()]
     y_te, x_te = y[k_indices[k].flatten()], x[k_indices[k].flatten()]
+    
 
 
     match function_name :
@@ -380,7 +381,7 @@ def cross_validation_one_step(y, x, k_indices, k, lambda_, function_name, initia
             w, loss_tr = mean_squared_error_sgd(y_tr, x_tr, initial_w, max_iters, gamma)
             loss_te = MSE_loss(y_te,x_te,w)
             return np.sqrt(2 * loss_tr), np.sqrt(2*loss_te),f1_and_accuracy(x_tr, x_te, y_tr,y_te,w)
-        case "least square":
+        case "least squares":
             w, loss_tr = least_squares(y_tr, x_tr)
             loss_te = MSE_loss(y_te, x_te, w)
             return np.sqrt(2 * loss_tr), np.sqrt(2*loss_te),f1_and_accuracy(x_tr, x_te, y_tr,y_te,w)
@@ -440,7 +441,7 @@ def cross_validation(y, x,k_fold,lambda_, function_name, initial_w, max_iters, g
 
 def compute_accuracy(y_true, y_pred, threshold=0.5):
     """Compute accuracy for binary classification."""
-    y_pred_binary = np.where(y_pred >= threshold, 0, 1)
+    y_pred_binary = np.where(y_pred < threshold, 0, 1)
     return np.mean(y_pred_binary == y_true)
     
 def f1_score(y_true, y_pred_binary):
@@ -473,17 +474,17 @@ def f1_and_accuracy(x_tr, x_te, y_tr,y_te,w):
     p_te = sigmoid(x_te @ w)
 
     best_f1, best_thr = 0, 0
-
     for thr in np.linspace(0.05, 0.95, 19):
-        y_pred = np.where(p_te >= thr,0,1)
+        y_pred = np.where(p_te < thr,0,1)
         f1 = f1_score(y_te, y_pred)
         if f1 > best_f1:
             best_f1, best_thr = f1, thr
+    best_f1 = f1_score(y_te,y_pred)
     print("Best threshold:", best_thr, "Best F1:", best_f1)
 
     # Binary predictions
-    y_tr_pred = np.where(p_tr >= best_thr,0,1)
-    y_te_pred = np.where(p_te >= best_thr,0,1)
+    y_tr_pred = np.where(p_tr < best_thr,0,1)
+    y_te_pred = np.where(p_te < best_thr,0,1)
 
     acc_tr = compute_accuracy(y_tr, p_tr)
     acc_te = compute_accuracy(y_te, p_te)
@@ -595,7 +596,7 @@ def replace_column_with(array1, array2, columns, values_to_replace, value_to_rep
             else:
                 itemindex1 = np.where((array1[:, column] == value_to_replace))
                 itemindex2 = np.where((array2[:, column] == value_to_replace))
+                
             array1[itemindex1, column] = value_to_replace_with
             array2[itemindex2, column] = value_to_replace_with
     return array1,array2
-

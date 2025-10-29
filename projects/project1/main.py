@@ -3,7 +3,7 @@ import numpy as np
 import os
 import timeit
 import implementations as imp
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 
 if __name__ == '__main__':
     start = timeit.default_timer()
@@ -11,11 +11,11 @@ if __name__ == '__main__':
     # Loading data, once its done no need to do it again
     #x_train, x_test, y_train, train_ids, test_ids = helpers.load_csv_data(os.getcwd() + "\\data\\dataset", sub_sample=True)
     #x_train = np.c_[np.ones(x_train.shape[0]), x_train]
-    # np.save("x_train_preprocessed_sub_sub.npy", x_train)
-    # np.save("y_train_preprocessed_sub.npy", y_train)
-    # np.save("x_test_preprocessed_sub.npy", x_test)
-    # np.save("train_ids.npy", train_ids)
-    # np.save("test_ids.npy", test_ids)
+    #np.save("x_train_preprocessed.npy", x_train)
+    #np.save("y_train_preprocessed.npy", y_train)
+    #np.save("x_test_preprocessed.npy", x_test)
+    #np.save("train_ids.npy", train_ids)
+    #np.save("test_ids.npy", test_ids)
 
 
     # Loading data so that it is faster
@@ -33,7 +33,6 @@ if __name__ == '__main__':
     x_test[inds] = np.take(col_mean, inds[1])
 
 
-
     # Normalization
     mean = np.nanmean(x_train, axis=0)
     std = np.nanstd(x_train, axis=0)
@@ -45,7 +44,7 @@ if __name__ == '__main__':
 
     max_iters = 5000
     lambda_ = 1e-4
-    method_name = "logistic regression adam"
+    method_name = "least square"
 
     initial_w = np.random.randn(x_train_poly.shape[1])
     

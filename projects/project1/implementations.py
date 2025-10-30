@@ -593,10 +593,10 @@ def cross_validation(y, x, k_fold, lambda_, function_name, initial_w, max_iters,
     k_indices = build_k_indices(y, k_fold, seed)
     loss_tr_avg = 0
     loss_te_avg = 0
-    acc_tr_avg = 0
-    acc_te_avg = 0
-    f1_tr_avg = 0
-    f1_te_avg = 0
+    acc_tr_avg = []
+    acc_te_avg = []
+    f1_tr_avg = []
+    f1_te_avg = []
 
     for k in range(k_fold):
         loss_tr, loss_te, f1_and_acc = cross_validation_one_step(
@@ -612,18 +612,20 @@ def cross_validation(y, x, k_fold, lambda_, function_name, initial_w, max_iters,
         )
         loss_tr_avg += loss_tr
         loss_te_avg += loss_te
-        acc_tr_avg += f1_and_acc[0]
-        acc_te_avg += f1_and_acc[1]
-        f1_tr_avg += f1_and_acc[2]
-        f1_te_avg += f1_and_acc[3]
+        acc_tr_avg.append(f1_and_acc[0])
+        acc_te_avg.append(f1_and_acc[1])
+        f1_tr_avg.append(f1_and_acc[2])
+        f1_te_avg.append(f1_and_acc[3])
+        
         # print(f"Test loss for trial no {k} : {loss_te}")
     loss_tr_avg /= k_fold
     loss_te_avg /= k_fold
-    acc_tr_avg /= k_fold
-    acc_te_avg /= k_fold
-    f1_tr_avg /= k_fold
-    f1_te_avg /= k_fold
-    return loss_tr_avg, loss_te_avg, acc_tr_avg, acc_te_avg, f1_tr_avg, f1_te_avg
+    acc_tr_avg = np.array(acc_tr_avg)
+    acc_te_avg = np.array(acc_tr_avg)
+    f1_tr_avg = np.array(f1_tr_avg)
+    f1_te_avg = np.array(f1_te_avg)
+    print(f"Accuracy test : { acc_te_avg.mean()}, Accuracy std : {acc_te_avg.std()}, F1 mean : {f1_te_avg.mean()}, F1 std : {f1_te_avg.std()}")
+    return loss_tr_avg, loss_te_avg, acc_tr_avg.mean(), acc_te_avg.mean(), f1_tr_avg.mean(), f1_te_avg.mean(), acc_tr_avg.std(), acc_te_avg.std(),f1_tr_avg.std(),f1_te_avg.std()
 
 
 def compute_accuracy(y_true, y_pred, threshold=0.5):

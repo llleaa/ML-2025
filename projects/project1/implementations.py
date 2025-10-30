@@ -665,7 +665,7 @@ def f1_and_accuracy(x_tr, x_te, y_tr, y_te, w):
     p_te = sigmoid(x_te @ w)
 
     best_f1, best_thr = 0, 0
-    for thr in np.linspace(0.05, 0.95, 19):
+    for thr in np.linspace(0.2, 0.8, 100):
         y_pred = np.where(p_te < thr, 0, 1)
         f1 = f1_score(y_te, y_pred)
         if f1 > best_f1:
@@ -861,7 +861,7 @@ def preprocess_columns(x_tr, x_te):
         x_te = np.delete(x_te, col, 1)
 
     encoded_parts = []
-    cols_to_encode = [1,43,50,78,81,91,94,107,110,113,177,180,182,202]
+    cols_to_encode = [1,43,78,110]
 
     for i in range(x_tr.shape[1]):
         if i in cols_to_encode:

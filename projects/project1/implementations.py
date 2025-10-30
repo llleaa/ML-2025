@@ -109,7 +109,7 @@ def stochastic_gradient_descent(
     """
 
     for i in range(max_iters):
-        w = w - gamma * (gradient(y, tx, w, batch_size=batch_size) + lambda_ * w)
+        w = w - gamma * (gradient(y, tx, w, batch_size=batch_size) + 2* lambda_ * w)
         # if i % 1000 == 0:
         #     print(f"Iter no {i} loss : {loss(y, tx, w)}")
 

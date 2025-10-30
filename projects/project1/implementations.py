@@ -696,270 +696,159 @@ def preprocess_columns(x_tr, x_te):
     x_tr, x_te = replace_column_with(x_tr, x_te, [228], [9], 3)
     x_tr, x_te = replace_column_with(x_tr, x_te, [232], [9], 2)
     x_tr, x_te = replace_column_with(x_tr, x_te, [146], [97], 5)
-    x_tr, x_te = replace_column_with(x_tr, x_te, [196, 198], [98], 0)
-    x_tr, x_te = replace_column_with(x_tr, x_te, [134, 183], [7, 9, np.nan], 3)
-    x_tr, x_te = replace_column_with(x_tr, x_te, [135, 136, 147], [7, np.nan], 2)
-    x_tr, x_te = replace_column_with(x_tr, x_te, [202], [7, 9, np.nan], 7)
-    x_tr, x_te = replace_column_with(
-        x_tr, x_te, [172, 174, 176, 179, 181, 184, 189], [7, 9, np.nan], 6
-    )
-    x_tr, x_te = replace_column_with(x_tr, x_te, [138, 139, 141], [7, 9, np.nan], 5)
-    x_tr, x_te = replace_column_with(
-        x_tr,
-        x_te,
-        [
-            124,
-            125,
-            158,
-            161,
-            162,
-            164,
-            165,
-            166,
-            171,
-            173,
-            175,
-            177,
-            178,
-            180,
-            182,
-            185,
-            186,
-            187,
-            188,
-            204,
-        ],
-        [7, 9, np.nan],
-        2,
-    )
-    x_tr, x_te = replace_column_with(
-        x_tr,
-        x_te,
-        [
-            121,
-            122,
-            156,
-            157,
-            201,
-        ],
-        [7, 9, np.nan],
-        0,
-    )
-    x_tr, x_te = replace_column_with(
-        x_tr, x_te, [148, 149, 150], [88, 98, 99, np.nan], 0
-    )
-    x_tr, x_te = replace_column_with(x_tr, x_te, [169], [77, 99, np.nan], 0)
-    x_tr, x_te = replace_column_with(x_tr, x_te, [151], [888, np.nan], 0)
-    x_tr, x_te = replace_column_with(x_tr, x_te, [152, 153, 154, 155], [8, np.nan], 0)
-    x_tr, x_te = replace_column_with(x_tr, x_te, [116], [np.nan], 8)
-    x_tr, x_te = replace_column_with(x_tr, x_te, [219], [np.nan], 6)
-    x_tr, x_te = replace_column_with(x_tr, x_te, [38], [np.nan], 5)
-    x_tr, x_te = replace_column_with(x_tr, x_te, [167], [np.nan], 4)
-    x_tr, x_te = replace_column_with(x_tr, x_te, [74, 98, 109], [np.nan], 3)
-    x_tr, x_te = replace_column_with(
-        x_tr, x_te, [14, 36, 39, 42, 65, 96, 97, 108, 110, 117, 118], [np.nan], 2
-    )
-    x_tr, x_te = replace_column_with(x_tr, x_te, [25, 57], [np.nan], 1)
-    x_tr, x_te = replace_column_with(
-        x_tr, x_te, [30, 75, 76, 79, 80, 81, 99, 113, 114, 115, 163], [np.nan], 0
-    )
-    x_tr, x_te = replace_column_with(
-        x_tr,
-        x_te,
-        [28, 29, 30, 60, 80, 113, 114, 115, 207, 208, 209, 210, 211, 212, 213, 214],
-        [88],
-        0,
-    )
-    x_tr, x_te = replace_column_with(x_tr, x_te, [193, 194], [8], np.nan)
+    x_tr, x_te = replace_column_with(x_tr, x_te, [196,198], [98], 0)
+    x_tr, x_te = replace_column_with(x_tr, x_te, [134,183],
+                                     [7,9,np.nan], 3)
+    x_tr, x_te = replace_column_with(x_tr, x_te, [135,136,147],
+                                     [7,np.nan], 2)
+    x_tr, x_te = replace_column_with(x_tr, x_te, [202],
+                                     [7,9,np.nan], 7)
+    x_tr, x_te = replace_column_with(x_tr, x_te, [172,174,176,179,181,184,189],
+                                     [7,9,np.nan], 6)
+    x_tr, x_te = replace_column_with(x_tr, x_te, [138,139,141],
+                                     [7,9,np.nan], 5)
+    x_tr, x_te = replace_column_with(x_tr, x_te, [124,125,158,161,162,164,165,166,171,173,175,177,178,180,182,
+                                                  185,186,187,188,204],
+                                     [7,9,np.nan], 2)
+    x_tr, x_te = replace_column_with(x_tr, x_te, [121,122,156,157,201,],
+                                     [7,9,np.nan], 0)
+    x_tr, x_te = replace_column_with(x_tr, x_te, [148,149,150],
+                                     [88,98,99,np.nan], 0)
+    x_tr, x_te = replace_column_with(x_tr, x_te, [169],
+                                     [77,99,np.nan], 0)
+    x_tr, x_te = replace_column_with(x_tr, x_te, [151],
+                                     [888,np.nan], 0)
+    x_tr, x_te = replace_column_with(x_tr, x_te, [152,153,154,155],
+                                     [8,np.nan], 0)
+    x_tr, x_te = replace_column_with(x_tr, x_te, [116],
+                                     [np.nan], 8)
+    x_tr, x_te = replace_column_with(x_tr, x_te, [219],
+                                     [np.nan], 6)
+    x_tr, x_te = replace_column_with(x_tr, x_te, [38],
+                                     [np.nan], 5)
+    x_tr, x_te = replace_column_with(x_tr, x_te, [167],
+                                     [np.nan], 4)
+    x_tr, x_te = replace_column_with(x_tr, x_te, [74,98,109],
+                                     [np.nan], 3)
+    x_tr, x_te = replace_column_with(x_tr, x_te, [14,36,39,42,65,96,97,108,110,117,118],
+                                     [np.nan], 2)
+    x_tr, x_te = replace_column_with(x_tr, x_te, [25,57],
+                                     [np.nan], 1)
+    x_tr, x_te = replace_column_with(x_tr, x_te, [30,75,76,79,80,81,99,113,114,115,163],
+                                     [np.nan], 0)
+    x_tr, x_te = replace_column_with(x_tr, x_te, [28,29,30,60,80,113,114,115,207,208,209,210,211,212,213,214],
+                                     [88], 0)
+    x_tr, x_te = replace_column_with(x_tr, x_te, [193,194], [8], np.nan)
     x_tr, x_te = replace_column_with(x_tr, x_te, [247], [14], np.nan)
     x_tr, x_te = replace_column_with(x_tr, x_te, [248], [3], np.nan)
-    x_tr, x_te = replace_column_with(x_tr, x_te, [89, 113, 114, 115], [88], np.nan)
-    x_tr, x_te = replace_column_with(x_tr, x_te, [50, 146], [98, 99], np.nan)
-    x_tr, x_te = replace_column_with(x_tr, x_te, [196, 198], [97], np.nan)
-    x_tr, x_te = replace_column_with(x_tr, x_te, [60, 196, 198], [99], np.nan)
+    x_tr, x_te = replace_column_with(x_tr, x_te, [89,113,114,115], [88], np.nan)
+    x_tr, x_te = replace_column_with(x_tr, x_te, [50,146], [98,99], np.nan)
+    x_tr, x_te = replace_column_with(x_tr, x_te, [196,198], [97], np.nan)
+    x_tr, x_te = replace_column_with(x_tr, x_te, [60,196,198], [99], np.nan)
     x_tr, x_te = replace_column_with(x_tr, x_te, [263], [900], np.nan)
-    x_tr, x_te = replace_column_with(
-        x_tr, x_te, [265, 288, 289, 294, 295, 298], [99900], np.nan
-    )
+    x_tr, x_te = replace_column_with(x_tr, x_te, [265,288,289,294,295,298], [99900], np.nan)
     x_tr, x_te = replace_column_with(x_tr, x_te, [253], [99999], np.nan)
-    x_tr, x_te = replace_column_with(
-        x_tr,
-        x_te,
-        [
-            52,
-            53,
-            59,
-            231,
-            233,
-            234,
-            235,
-            236,
-            237,
-            238,
-            242,
-            243,
-            244,
-            245,
-            256,
-            257,
-            258,
-            259,
-            260,
-            261,
-            262,
-            264,
-            266,
-            279,
-            280,
-            285,
-            299,
-            306,
-            307,
-            308,
-            309,
-            310,
-            311,
-            312,
-            313,
-            314,
-            315,
-            316,
-            317,
-            318,
-            319,
-            320,
-            321,
-        ],
-        [9],
-        np.nan,
-    )
-    x_tr, x_te = replace_column_with(
-        x_tr,
-        x_te,
-        [
-            25,
-            27,
-            31,
-            32,
-            33,
-            34,
-            35,
-            36,
-            37,
-            38,
-            39,
-            40,
-            41,
-            42,
-            43,
-            44,
-            45,
-            46,
-            47,
-            48,
-            49,
-            54,
-            55,
-            56,
-            57,
-            58,
-            62,
-            65,
-            66,
-            67,
-            68,
-            69,
-            70,
-            71,
-            72,
-            73,
-            74,
-            75,
-            77,
-            88,
-            96,
-            97,
-            98,
-            99,
-            100,
-            101,
-            104,
-            105,
-            108,
-            109,
-            110,
-            116,
-            117,
-            118,
-            119,
-            127,
-            128,
-            129,
-            130,
-            132,
-            133,
-            137,
-            140,
-            142,
-            143,
-            145,
-            152,
-            153,
-            154,
-            155,
-            159,
-            160,
-            163,
-            167,
-            168,
-            170,
-            193,
-            194,
-            199,
-            200,
-            203,
-            205,
-            206,
-            215,
-            216,
-            224,
-        ],
-        [7, 9],
-        np.nan,
-    )
-    x_tr, x_te = replace_column_with(
-        x_tr,
-        x_te,
-        [
-            26,
-            28,
-            29,
-            30,
-            61,
-            76,
-            79,
-            80,
-            81,
-            89,
-            113,
-            114,
-            115,
-            131,
-            207,
-            208,
-            209,
-            210,
-            211,
-            212,
-            213,
-            214,
-            225,
-            226,
-        ],
-        [77, 99],
-        np.nan,
-    )
-    x_tr, x_te = replace_column_with(x_tr, x_te, [151, 240, 241], [777, 999], np.nan)
+    x_tr, x_te = replace_column_with(x_tr, x_te, [52,53,59,231,233,234,235,236,237,238,242,243,244,245,256,257,
+                                                  258,259,260,261,262,264,266,279,280,285,299,306,307,308,309,310,311,
+                                                  312,313,314,315,316,317,318,319,320,321],
+                                     [9], np.nan)
+    x_tr, x_te = replace_column_with(x_tr, x_te, [25,27,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,
+                                                  49,54,55,56,57,58,62,65,66,67,68,69,70,71,72,73,74,75,77,88,96,97,98,
+                                                  99,100,101,104,105,108,109,110,116,117,118,119,127,128,129,130,132,133,
+                                                  137,140,142,143,145,152,153,154,155,159,160,163,167,168,170,193,194,
+                                                  199,200,203,205,206,215,216,224],
+                                     [7,9], np.nan)
+    x_tr, x_te = replace_column_with(x_tr, x_te, [26,28,29,30,61,76,79,80,81,89,113,114,115,131,207,208,209,210,
+                                                  211,212,213,214,225,226],
+                                     [77,99], np.nan)
+    x_tr, x_te = replace_column_with(x_tr, x_te, [151,240,241],
+                                     [777,999], np.nan)
+
+    for column in [78,90,93,95]:
+        itemindex1 = np.where((x_tr[:, column] >= 101) & (x_tr[:, column] <= 199))
+        itemindex2 = np.where((x_te[:, column] >= 101) & (x_te[:, column] <= 199))
+        x_tr[itemindex1, column] = (x_tr[itemindex1, column] - 100) * 4
+        x_te[itemindex2, column] = (x_te[itemindex2, column] - 100) * 4
+        itemindex1 = np.where((x_tr[:, column] >= 201) & (x_tr[:, column] <= 299))
+        itemindex2 = np.where((x_te[:, column] >= 201) & (x_te[:, column] <= 299))
+        x_tr[itemindex1, column] = x_tr[itemindex1, column] - 200
+        x_te[itemindex2, column] = x_te[itemindex2, column] - 200
+        itemindex1 = np.where((x_tr[:, column] == 888))
+        itemindex2 = np.where((x_te[:, column] == 888))
+        x_tr[itemindex1, column] = 0
+        x_te[itemindex2, column] = 0
+        itemindex1 = np.where((x_tr[:, column] == 777) | (x_tr[:, column] == 999))
+        itemindex2 = np.where((x_te[:, column] == 777) | (x_te[:, column] == 999))
+        x_tr[itemindex1, column] = np.nan
+        x_te[itemindex2, column] = np.nan
+
+    for column in [82,83,84,85,86,87,111,112]:
+        itemindex1 = np.where((x_tr[:, column] >= 101) & (x_tr[:, column] <= 199))
+        itemindex2 = np.where((x_te[:, column] >= 101) & (x_te[:, column] <= 199))
+        x_tr[itemindex1, column] = (x_tr[itemindex1, column] - 100) * 30
+        x_te[itemindex2, column] = (x_te[itemindex2, column] - 100) * 30
+        itemindex1 = np.where((x_tr[:, column] >= 201) & (x_tr[:, column] <= 299))
+        itemindex2 = np.where((x_te[:, column] >= 201) & (x_te[:, column] <= 299))
+        x_tr[itemindex1, column] = (x_tr[itemindex1, column] - 200) * 4
+        x_te[itemindex2, column] = (x_te[itemindex2, column] - 200) * 4
+        itemindex1 = np.where((x_tr[:, column] >= 301) & (x_tr[:, column] <= 399))
+        itemindex2 = np.where((x_te[:, column] >= 301) & (x_te[:, column] <= 399))
+        x_tr[itemindex1, column] = x_tr[itemindex1, column] - 300
+        x_te[itemindex2, column] = x_te[itemindex2, column] - 300
+        itemindex1 = np.where((x_tr[:, column] == 300))
+        itemindex2 = np.where((x_te[:, column] == 300))
+        x_tr[itemindex1, column] = 0.5
+        x_te[itemindex2, column] = 0.5
+        itemindex1 = np.where((x_tr[:, column] == 555) | (x_tr[:, column] == 888))
+        itemindex2 = np.where((x_te[:, column] == 555) | (x_te[:, column] == 888))
+        x_tr[itemindex1, column] = 0
+        x_te[itemindex2, column] = 0
+        itemindex1 = np.where((x_tr[:, column] == 777) | (x_tr[:, column] == 999))
+        itemindex2 = np.where((x_te[:, column] == 777) | (x_te[:, column] == 999))
+        x_tr[itemindex1, column] = np.nan
+        x_te[itemindex2, column] = np.nan
+
+    for column in [91,94]:
+        itemindex1 = np.where((x_tr[:, column] >= 1) & (x_tr[:, column] <= 759))
+        itemindex2 = np.where((x_te[:, column] >= 1) & (x_te[:, column] <= 759))
+        x_tr[itemindex1, column] = np.floor(x_tr[itemindex1, column] / 100) * 60 + x_tr[itemindex1, column] % 100
+        x_te[itemindex2, column] = np.floor(x_te[itemindex2, column] / 100) * 60 + x_te[itemindex2, column] % 100
+        itemindex1 = np.where((x_tr[:, column] >= 800) & (x_tr[:, column] <= 959))
+        itemindex2 = np.where((x_te[:, column] >= 800) & (x_te[:, column] <= 959))
+        x_tr[itemindex1, column] = np.floor(x_tr[itemindex1, column] / 100) * 60 + x_tr[itemindex1, column] % 100
+        x_te[itemindex2, column] = np.floor(x_te[itemindex2, column] / 100) * 60 + x_te[itemindex2, column] % 100
+        itemindex1 = np.where((x_tr[:, column] == 777) | (x_tr[:, column] == 999))
+        itemindex2 = np.where((x_te[:, column] == 777) | (x_te[:, column] == 999))
+        x_tr[itemindex1, column] = np.nan
+        x_te[itemindex2, column] = np.nan
+
+    for column in [111,112]:
+        itemindex1 = np.where((x_tr[:, column] >= 401) & (x_tr[:, column] <= 499))
+        itemindex2 = np.where((x_te[:, column] >= 401) & (x_te[:, column] <= 499))
+        x_tr[itemindex1, column] = (x_tr[itemindex1, column] - 400) / 12
+        x_te[itemindex2, column] = (x_te[itemindex2, column] - 400) / 12
+
+    for column in [144]:
+        itemindex1 = np.where((x_tr[:, column] >= 101) & (x_tr[:, column] <= 199))
+        itemindex2 = np.where((x_te[:, column] >= 101) & (x_te[:, column] <= 199))
+        x_tr[itemindex1, column] = (x_tr[itemindex1, column] - 100)
+        x_te[itemindex2, column] = (x_te[itemindex2, column] - 100)
+        itemindex1 = np.where((x_tr[:, column] >= 201) & (x_tr[:, column] <= 299))
+        itemindex2 = np.where((x_te[:, column] >= 201) & (x_te[:, column] <= 299))
+        x_tr[itemindex1, column] = (x_tr[itemindex1, column] - 200) * 7
+        x_te[itemindex2, column] = (x_te[itemindex2, column] - 200) * 7
+        itemindex1 = np.where((x_tr[:, column] >= 301) & (x_tr[:, column] <= 399))
+        itemindex2 = np.where((x_te[:, column] >= 301) & (x_te[:, column] <= 399))
+        x_tr[itemindex1, column] = (x_tr[itemindex1, column] - 300) * 30
+        x_te[itemindex2, column] = (x_te[itemindex2, column] - 300) * 30
+        itemindex1 = np.where((x_tr[:, column] >= 401) & (x_tr[:, column] <= 499))
+        itemindex2 = np.where((x_te[:, column] >= 401) & (x_te[:, column] <= 499))
+        x_tr[itemindex1, column] = (x_tr[itemindex1, column] - 400) * 365
+        x_te[itemindex2, column] = (x_te[itemindex2, column] - 400) * 365
+        itemindex1 = np.where((x_tr[:, column] == 777) | (x_tr[:, column] == 999))
+        itemindex2 = np.where((x_te[:, column] == 777) | (x_te[:, column] == 999))
+        x_tr[itemindex1, column] = np.nan
+        x_te[itemindex2, column] = np.nan
 
     col_mean = np.nanmean(x_tr, axis=0)
     inds = np.where(np.isnan(x_tr))
@@ -967,36 +856,44 @@ def preprocess_columns(x_tr, x_te):
     inds = np.where(np.isnan(x_te))
     x_te[inds] = np.take(col_mean, inds[1])
 
-    for col in sorted(
-        [
-            230,
-            229,
-            227,
-            223,
-            222,
-            221,
-            220,
-            192,
-            191,
-            106,
-            102,
-            64,
-            63,
-            23,
-            20,
-            19,
-            13,
-            12,
-            10,
-            9,
-            8,
-            3,
-        ]
-    )[::-1]:
+    for col in sorted([230,229,227,223,222,221,220,192,191,106,102,64,63,23,20,19,13,12,10,9,8,3])[::-1]:
         x_tr = np.delete(x_tr, col, 1)
         x_te = np.delete(x_te, col, 1)
 
-    return x_tr, x_te
+    encoded_parts = []
+    cols_to_encode = [1,43,50,78,81,91,94,107,110,113,177,180,182,202]
+
+    for i in range(x_tr.shape[1]):
+        if i in cols_to_encode:
+            col = x_tr[:, i]
+            unique_vals = np.unique(col)
+            mapping = {val: idx for idx, val in enumerate(unique_vals)}
+            indices = np.vectorize(mapping.get)(col)
+            one_hot = np.eye(len(unique_vals))[indices]
+            encoded_parts.append(one_hot)
+        else:
+            encoded_parts.append(x_tr[:, [i]])
+
+    encoded_x_tr = np.hstack(encoded_parts)
+
+    encoded_parts = []
+
+    for i in range(x_te.shape[1]):
+        if i in cols_to_encode:
+            col = x_te[:, i]
+            unique_vals = np.unique(col)
+            mapping = {val: idx for idx, val in enumerate(unique_vals)}
+            indices = np.vectorize(mapping.get)(col)
+            one_hot = np.eye(len(unique_vals))[indices]
+            encoded_parts.append(one_hot)
+        else:
+            encoded_parts.append(x_te[:, [i]])
+
+    encoded_x_te = np.hstack(encoded_parts)
+
+
+    return encoded_x_tr, encoded_x_te
+
 
 
 def replace_column_with(

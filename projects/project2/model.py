@@ -1,4 +1,5 @@
-from torch import nn
+from torch import nn, optim
+import torch
 import model_parts
 
 class UNet(nn.Module):
@@ -32,5 +33,23 @@ class UNet(nn.Module):
         x = self.up4(x, x1)
         logits = self.outc(x)
         return logits
+
+    def fit(self, X, y, max_epochs, batch_size, lr=0.001):
+        if self.n_classes == 2:
+            criterion = nn.BCELoss()
+        else:
+            criterion = nn.CrossEntropyLoss()
+        optimizer = optim.Adam(self.parameters(), lr=lr)
+
+        device = torch.device(
+            "cuda" if torch.cuda.is_available() else ("mps" if torch.backends.mps.is_available() else "cpu"))
+        self.to(device)
+
+        for epoch in range(max_epochs):
+            if torch.cuda.is_available(): torch.cuda.reset_peak_memory_stats()
+            # TODO : finish fit method
+
+
+        return 0
 
 

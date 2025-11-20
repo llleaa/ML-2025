@@ -1,6 +1,7 @@
 from torch import nn, optim
 import torch
 import model_parts
+import time
 
 class UNet(nn.Module):
     def __init__(self, n_channels, n_classes, bilinear=False):
@@ -34,7 +35,8 @@ class UNet(nn.Module):
         logits = self.outc(x)
         return logits
 
-    def fit(self, X, y, max_epochs, batch_size, lr=0.001):
+    def fit(self, train_dataloader, val_dataloader, max_epochs, save_path, lr=0.001):
+
         if self.n_classes == 2:
             criterion = nn.BCELoss()
         else:
@@ -44,12 +46,50 @@ class UNet(nn.Module):
         device = torch.device(
             "cuda" if torch.cuda.is_available() else ("mps" if torch.backends.mps.is_available() else "cpu"))
         self.to(device)
-
+        train_losses, val_losses = [], []
         for epoch in range(max_epochs):
+            start_time = time.time()
+            self.train()
             if torch.cuda.is_available(): torch.cuda.reset_peak_memory_stats()
-            # TODO : finish fit method
+            running = 0
+            for X, y in train_dataloader:
+                X, y = X.to(device, non_blocking=True), y.to(device, non_blocking=True)
+                optimizer.zero_grad(set_to_none=True)
+                loss = criterion(self.forward(X), y)
+                loss.backward()
+                optimizer.step()
+                running += loss.item() * X.size(0)
+
+            train_losses.append(running / max(1, len(train_dataloader)))
+
+            self.eval()
+            running = 0
+            with torch.no_grad():
+                for X, y in val_dataloader:
+                    X, y = X.to(device, non_blocking=True), y.to(device, non_blocking=True)
+                    loss = criterion(self.forward(X), y)
+                    running += loss.item() * X.size(0)
+                val_losses.append(running / max(1, len(val_dataloader)))
+
+            print(f"Epoch [{epoch + 1}/{max_epochs}]  train_loss: {train_losses[-1]:.4f}  val_loss: {val_losses[-1]:.4f}  time: {time.time() - start_time:.2f}s")
+
+        self.save_model(save_path)
+
+        return train_losses, val_losses
 
 
-        return 0
+    def predict(self, X):
+        self.eval()
+        with torch.no_grad():
+            return self.forward(X)
 
 
+
+    def save_model(self, path):
+        torch.save(self.state_dict(), path)
+        print(f"Model saved to {path}")
+
+
+    def load_model(self, path):
+        self.load_state_dict(torch.load(path))
+        print(f"Model loaded from {path}")

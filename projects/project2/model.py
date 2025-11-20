@@ -4,7 +4,12 @@ import model_parts
 import time
 
 class UNet(nn.Module):
-    def __init__(self, n_channels, n_classes, bilinear=False):
+    def __init__(self, n_channels, n_classes, bilinear=False, load_from=None):
+
+        if load_from is not None:
+            self.load_state_dict(torch.load(load_from))
+            return
+
         super(UNet, self).__init__()
         self.n_channels = n_channels
         self.n_classes = n_classes
@@ -88,7 +93,6 @@ class UNet(nn.Module):
     def save_model(self, path):
         torch.save(self.state_dict(), path)
         print(f"Model saved to {path}")
-
 
     def load_model(self, path):
         self.load_state_dict(torch.load(path))

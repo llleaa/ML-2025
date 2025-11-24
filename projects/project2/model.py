@@ -15,7 +15,7 @@ class UNet(nn.Module):
         self.n_classes = n_classes
         self.bilinear = bilinear
 
-        self.inc = (model_parts.DoubleConv(n_channels, 64))
+        self.inc = (model_parts.DoubleConv(n_channels, 64)) #TODO try decreasing
         self.down1 = (model_parts.Down(64, 128))
         self.down2 = (model_parts.Down(128, 256))
         self.down3 = (model_parts.Down(256, 512))

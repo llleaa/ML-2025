@@ -4,7 +4,7 @@ import model_parts
 import time
 
 class UNet(nn.Module):
-    def __init__(self, n_channels, n_classes, bilinear=False, load_from=None):
+    def __init__(self, n_channels, first_layer_size, n_classes, depth, load_from=None):
 
         if load_from is not None:
             self.load_state_dict(torch.load(load_from))
@@ -12,32 +12,24 @@ class UNet(nn.Module):
 
         super(UNet, self).__init__()
         self.n_channels = n_channels
+        self.first_layer_size = first_layer_size
         self.n_classes = n_classes
-        self.bilinear = bilinear
+        self.depth = depth
 
-        self.inc = (model_parts.DoubleConv(n_channels, 64)) #TODO try decreasing
-        self.down1 = (model_parts.Down(64, 128))
-        self.down2 = (model_parts.Down(128, 256))
-        self.down3 = (model_parts.Down(256, 512))
-        factor = 2 if bilinear else 1
-        self.down4 = (model_parts.Down(512, 1024 // factor))
-        self.up1 = (model_parts.Up(1024, 512 // factor, bilinear))
-        self.up2 = (model_parts.Up(512, 256 // factor, bilinear))
-        self.up3 = (model_parts.Up(256, 128 // factor, bilinear))
-        self.up4 = (model_parts.Up(128, 64, bilinear))
-        self.outc = (model_parts.OutConv(64, n_classes))
+        self.inc = (model_parts.DoubleConv(n_channels, first_layer_size))
+        self.down_layers = nn.Sequential()
+        self.up_layers = nn.Sequential()
+        for i in range(depth):
+            self.down_layers.append(model_parts.Down(first_layer_size*(2**depth), first_layer_size*(2**(depth+1))))
+        for i in range(depth-1, -1, -1):
+            self.up_layers.append(model_parts.Up(first_layer_size*(2**depth+1), first_layer_size*(2**(depth))))
+        self.outc = (model_parts.OutConv(first_layer_size, n_classes))
 
     def forward(self, x):
         x1 = self.inc(x)
-        x2 = self.down1(x1)
-        x3 = self.down2(x2)
-        x4 = self.down3(x3)
-        x5 = self.down4(x4)
-        x = self.up1(x5, x4)
-        x = self.up2(x, x3)
-        x = self.up3(x, x2)
-        x = self.up4(x, x1)
-        logits = self.outc(x)
+        x2 = self.down_layers(x1)
+        x3 = self.up_layers(x2)
+        logits = self.outc(x3)
         return logits
 
     def fit(self, train_dataloader, val_dataloader, max_epochs, save_path, lr=0.001):

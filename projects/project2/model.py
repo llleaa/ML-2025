@@ -3,6 +3,7 @@ import torch
 import model_parts
 import time
 
+
 class UNet(nn.Module):
     def __init__(self, n_channels, first_layer_size, n_classes, depth, load_from=None):
 
@@ -16,14 +17,6 @@ class UNet(nn.Module):
         self.n_classes = n_classes
         self.depth = depth
 
-        #self.inc = (model_parts.DoubleConv(n_channels, first_layer_size))
-        # self.down_layers = nn.Sequential()
-        # self.up_layers = nn.Sequential()
-        # for i in range(depth):
-        #     self.down_layers.append(model_parts.Down(first_layer_size*(2**depth), first_layer_size*(2**(depth+1))))
-        # for i in range(depth-1, -1, -1):
-        #     self.up_layers.append(model_parts.Up(first_layer_size*(2**depth+1), first_layer_size*(2**(depth))))
-        # self.outc = (model_parts.OutConv(first_layer_size, n_classes))
         self.inc = model_parts.DoubleConv(n_channels, first_layer_size)
 
         self.down_layers = nn.ModuleList()
@@ -40,12 +33,6 @@ class UNet(nn.Module):
         self.outc = model_parts.OutConv(first_layer_size, n_classes)
 
 
-    # def forward(self, x):
-    #     x1 = self.inc(x)
-    #     x2 = self.down_layers(x1)
-    #     x3 = self.up_layers(x2)
-    #     logits = self.outc(x3)
-    #     return logits
     def forward(self, x):
         skips = []
 
@@ -66,8 +53,9 @@ class UNet(nn.Module):
 
         return self.outc(x)
     
-    def fit(self, train_dataloader, val_dataloader, max_epochs, save_path, lr=0.001):
 
+    def fit(self, train_dataloader, val_dataloader, max_epochs, save_path, lr=0.001):
+    
         if self.n_classes == 2:
             criterion = nn.BCELoss()
         else:

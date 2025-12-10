@@ -1,0 +1,6 @@
+Load images dataset/generated_cells: 102 
+Number of image in Train: 30 | Val: 72
+Pretrained model: None
+UNet: 31036481 number of trainable parameters of model 
+Using device: cuda
+Starting training for 1000 epochs...

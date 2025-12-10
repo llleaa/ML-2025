@@ -1,5 +1,0 @@
-Load images dataset/generated_cells: 102 
-Number of image in Train: 82 | Val: 20
-Pretrained model: None
-Using device: cuda
-Starting training for 500 epochs...

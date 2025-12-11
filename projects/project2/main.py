@@ -20,26 +20,37 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--load_model', help='Load trained model from path', required=False, type=str, default=None)
     parser.add_argument('-lr', '--learning_rate', help='Learning rate', required=False, type=float, default=1e-3)
-    parser.add_argument('-bs', '--batch_size', help='Batch size', required=False, type=int, default=16)
+    parser.add_argument('-bs', '--batch_size', help='Batch size', required=False, type=int, default=64)
     parser.add_argument('-e', '--epochs', help='Number of epochs', required=False, type=int, default=100)
     parser.add_argument('-d', '--depth', help='Depth of UNet Model', required=False, type=int, default=4)
     parser.add_argument('-fls', '--first_layer_size', help='Size of first layer', required=False, type=int, default=64)
     parser.add_argument('-r', '--record', help='Outputs log to .txt file', required=False, action='store_true')
     parser.add_argument('-s', '--sample', help='Number of training samples', required=False, type=int, default=500)
     parser.add_argument('-f', '--fold', help='Number of folds that the model is trained', required=False, type=int, default=3)
-
+    parser.add_argument('-a', '--annotation', help='Annotation quality [1,0.9,0.78,0.72,0.57]', required=False, type=float, default=1)
 
 
     args = parser.parse_args()
 
     lr = args.learning_rate
 
-    train_dataset = f"dataset/generated_cells"
-    dataset = SegmentationDataset(train_dataset)
+    if not args.annotation in [1,0.9,0.78,0.72,0.57]:
+        raise Exception('bad annotation value, see usage')
+    
+    if args.annotation == 1:
+        train_dataset_path = f"dataset/generated_cells"
+    else:
+        train_dataset_path = f"dataset/eroded-dilated_{args.annotation}"
+    
+    val_dataset_path = f"dataset/generated_cells"
+
+    train_dataset = SegmentationDataset(train_dataset_path)
+
+    val_dataset = SegmentationDataset(val_dataset_path)
     
     val_ratio = 0.2
-    n_train = int(min(args.sample, len(dataset) * (1-val_ratio)))
-    n_val = len(dataset) - n_train
+    n_train = int(min(args.sample, len(train_dataset) * (1-val_ratio)))
+    n_val = len(train_dataset) - n_train
 
 
     if args.record:
@@ -49,16 +60,17 @@ if __name__ == '__main__':
 
     device = torch.device("cuda" if torch.cuda.is_available() else ("mps" if torch.backends.mps.is_available() else "cpu"))
 
-    print(f'Load images {train_dataset}: {len(dataset)} ')
+    print(f'Load images {train_dataset_path}: {len(train_dataset)} ')
 
     mean_time = 0
     mean_iou = 0
 
     for fold in range(args.fold):
 
-        perm = torch.randperm(len(dataset)).tolist()
-        train_dataset = Subset(dataset, perm[n_val:])
-        val_dataset = Subset(dataset, perm[:n_val])
+        perm = torch.randperm(len(train_dataset)).tolist()
+        print(perm)
+        train_dataset = Subset(train_dataset, perm[n_val:])
+        val_dataset = Subset(val_dataset, perm[:n_val])
 
         train_loader = DataLoader(train_dataset, batch_size=args.batch_size, shuffle=True, num_workers=0, pin_memory=True)
         val_loader = DataLoader(val_dataset, batch_size=args.batch_size, shuffle=False, num_workers=0, pin_memory=True)

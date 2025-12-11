@@ -46,12 +46,12 @@ if __name__ == '__main__':
 
     train_dataset = SegmentationDataset(train_dataset_path)
 
-    #val_dataset = SegmentationDataset(val_dataset_path)
+    val_dataset = SegmentationDataset(val_dataset_path)
 
-    val_dataset = SegmentationDataset(f"dataset/eroded-dilated_{args.annotation}")
+    #val_dataset = SegmentationDataset(f"dataset/eroded-dilated_{args.annotation}")
     img, msk = val_dataset[4]
 
-    print(msk.max(), msk.min(), np.count_nonzero(msk))
+    #print(msk.max(), msk.min(), np.count_nonzero(msk))
 
 
     print("my image : ", np.count_nonzero(val_dataset[40][1]))

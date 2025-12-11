@@ -88,7 +88,7 @@ def simulate_dataset_squares(project, image_size, type_name, n_imgs, class_prope
 
 class SegmentationDataset(Dataset):
     def __init__(self, dataset_root, image_subdir="images", mask_subdir="masks"):
-        exts=("png","jpg","jpeg","tif","tiff","bmp")
+        exts=("png", "tif", "tiff")
         self.image_dir = os.path.join(dataset_root, image_subdir)
         self.mask_dir  = os.path.join(dataset_root, mask_subdir)
         self.grayscale = True
@@ -133,7 +133,7 @@ class SegmentationDataset(Dataset):
         image = self._quantile_minmax(image)
         mask = io.imread(mask_path, as_gray=True)
         image = torch.from_numpy(image).unsqueeze(0).float() # Add channel dimension and convert to float
-        mask = torch.from_numpy(mask).long() # Convert to Long tensor for CrossEntropyLoss
+        mask = torch.from_numpy(mask).float() # Convert to Long tensor for CrossEntropyLoss
         return image, mask
 
 class SegmentationDataset1(Dataset):

@@ -46,7 +46,17 @@ if __name__ == '__main__':
 
     train_dataset = SegmentationDataset(train_dataset_path)
 
-    val_dataset = SegmentationDataset(val_dataset_path)
+    #val_dataset = SegmentationDataset(val_dataset_path)
+
+    val_dataset = SegmentationDataset(f"dataset/eroded-dilated_{args.annotation}")
+    img, msk = val_dataset[4]
+
+    print(msk.max(), msk.min(), np.count_nonzero(msk))
+
+
+    print("my image : ", np.count_nonzero(val_dataset[40][1]))
+    print("my image : ", np.count_nonzero(train_dataset[40][1]))
+
     
     val_ratio = 0.2
     n_train = int(min(args.sample, len(train_dataset) * (1-val_ratio)))
@@ -118,6 +128,8 @@ if __name__ == '__main__':
                 scheduler.step(loss)
                 optimizer.step()
                 running += loss.item() * imgs.size(0)
+
+                
             tr_loss = running / len(train_loader)
             train_losses.append(tr_loss)
 
@@ -133,13 +145,20 @@ if __name__ == '__main__':
                     vloss = criterion(out, msks)
                     val_running += vloss.item() * imgs.size(0)
 
-                    pred = torch.sigmoid(out)
-                    pred = (pred > 0.5).float()
+                    pred = (torch.sigmoid(out) > 0.5).float()
 
-                    iou_running += jaccard_score(
-                        msks.cpu().numpy().reshape(-1),
-                        pred.cpu().numpy().reshape(-1)
-                    )
+                    intersection = (pred * msks).sum()
+                    union = pred.sum() + msks.sum() - intersection
+
+                    iou = (intersection / (union + 1e-6)).item()
+                    iou_running += iou
+
+                    #iou_running += jaccard_score(
+                    
+                        #msks.squeeze(1).cpu().numpy().reshape(-1).astype(int),
+                        #pred.squeeze(1).cpu().numpy().reshape(-1).astype(int),
+                        #average="binary"
+                    #)
             va_loss = val_running / len(val_loader)
             va_iou = iou_running / len(val_loader)
             val_losses.append(va_loss)

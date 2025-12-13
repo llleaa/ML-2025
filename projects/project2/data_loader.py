@@ -223,6 +223,140 @@ def visualize_prediction(model, subset, device, sample_idx=0):
         plt.subplot(1, 3, 2); plt.imshow(gt_rgb);  plt.title("Ground Truth");  plt.axis('off')
         plt.subplot(1, 3, 3); plt.imshow(pred_rgb);plt.title("Prediction");    plt.axis('off')
         plt.show()
+
+
+def visualize_img(img, mask, pred, iou, best=True):
+    from sklearn.metrics import jaccard_score
+    from matplotlib.colors import ListedColormap
+    from matplotlib.patches import Patch
+    
+    mask = mask.squeeze().cpu().numpy()  # Shape: (256, 256)
+    pred = pred.squeeze().cpu().numpy()
+    img = img.squeeze().cpu().numpy()
+    
+    fig = plt.figure(figsize=(20, 6))
+    
+    # Define your custom color palette
+    # 0 = Black (correct background - both 0)
+    # 1 = White (correct foreground - both 1)  
+    # 2 = Red (false negative - mask=1, pred=0)
+    # 3 = Green (false positive - mask=0, pred=1)
+    custom_colors = ["#000000", "#ffffff", "#ff0000", "#00ff00"]
+    custom_cmap = ListedColormap(custom_colors)
+    
+    # Create difference map with discrete values 0, 1, 2, 3
+    diff = np.zeros_like(mask, dtype=int)
+    
+    # Correct background (both 0) -> 0 (black)
+    diff[(mask == 0) & (pred == 0)] = 0
+    
+    # Correct foreground (both 1) -> 1 (white)
+    diff[(mask == 1) & (pred == 1)] = 1
+    
+    # False negative (mask=1, pred=0) -> 2 (red)
+    diff[(mask == 1) & (pred == 0)] = 2
+    
+    # False positive (mask=0, pred=1) -> 3 (green)
+    diff[(mask == 0) & (pred == 1)] = 3
+    
+    plt.subplot(1, 4, 1)
+    plt.imshow(img, cmap='gray')
+    plt.title("Generated Image")
+    plt.axis('off')
+    
+    plt.subplot(1, 4, 2)
+    plt.imshow(mask, cmap='gray')
+    plt.title("Annotation")
+    plt.axis('off')
+    
+    plt.subplot(1, 4, 3)
+    plt.imshow(pred, cmap='gray')
+    plt.title("Predicted Annotation")
+    plt.axis('off')
+    
+    ax4 = plt.subplot(1, 4, 4)
+    plt.imshow(diff, cmap=custom_cmap, vmin=0, vmax=3)  # Updated vmax to 3
+    plt.title("Prediction vs Annotation")
+    plt.axis('off')
+    
+    # Create legend
+    legend_elements = [
+        Patch(facecolor='#000000', edgecolor='black', label='TN'),
+        Patch(facecolor='#ffffff', edgecolor='black', label='TP'),
+        Patch(facecolor='#ff0000', edgecolor='black', label='FN'),
+        Patch(facecolor='#00ff00', edgecolor='black', label='FP')
+    ]
+    ax4.legend(handles=legend_elements, loc='upper left', bbox_to_anchor=(1.05, 1), 
+               frameon=True, fontsize=10)
+    
+    if best:
+        plt.suptitle(f"Best prediction (IoU: {iou:.4f})", fontsize=14, fontweight='bold')
+        print(f"Best IoU on prediction: {iou:.4f}")
+    else:
+        plt.suptitle(f"Worst prediction (IoU: {iou:.4f})", fontsize=14, fontweight='bold')
+        print(f"Worst IoU on prediction: {iou:.4f}")
+    
+    plt.tight_layout()
+    return plt
+
+def visualize_img2(img, mask, pred, iou):
+    from matplotlib.colors import ListedColormap
+    from matplotlib.patches import Patch
+
+    
+    fig = plt.figure(figsize=(20, 6))
+    mask = (mask > 0.5).astype(int)
+    pred = (pred > 0.5).astype(int)
+    print(pred)
+    
+    # Define your custom color palette
+    # 0 = Black (correct background - both 0)
+    # 1 = White (correct foreground - both 1)  
+    # 2 = Red (false negative - mask=1, pred=0)
+    # 3 = Green (false positive - mask=0, pred=1)
+    custom_colors = ["#000000", "#ffffff", "#ff0000", "#00ff00"]
+    custom_cmap = ListedColormap(custom_colors)
+    
+    # Create difference map with discrete values 0, 1, 2, 3
+    diff = np.zeros_like(mask, dtype=int)
+    
+    # Correct background (both 0) -> 0 (black)
+    diff[(mask == 0) & (pred == 0)] = 0
+    
+    # Correct foreground (both 1) -> 1 (white)
+    diff[(mask == 1) & (pred == 1)] = 1
+    
+    # False negative (mask=1, pred=0) -> 2 (red)
+    diff[(mask == 1) & (pred == 0)] = 2
+    
+    # False positive (mask=0, pred=1) -> 3 (green)
+    diff[(mask == 0) & (pred == 1)] = 3
+    
+    plt.subplot(1, 4, 1)
+    plt.imshow(img, cmap='gray')
+    plt.title("Generated Image")
+    plt.axis('off')
+    
+    ax4 = plt.subplot(1, 4, 2)
+    plt.imshow(diff, cmap=custom_cmap, vmin=0, vmax=3)  # Updated vmax to 3
+    plt.title("Prediction vs Annotation")
+    plt.axis('off')
+    
+    # Create legend
+    legend_elements = [
+        Patch(facecolor='#000000', edgecolor='black', label='TN'),
+        Patch(facecolor='#ffffff', edgecolor='black', label='TP'),
+        Patch(facecolor='#ff0000', edgecolor='black', label='FN'),
+        Patch(facecolor='#00ff00', edgecolor='black', label='FP')
+    ]
+    ax4.legend(handles=legend_elements, loc='upper left', bbox_to_anchor=(1.05, 1), 
+               frameon=True, fontsize=10)
+    
+    fig.suptitle(f"Differences between images with IoU: {iou:.2f}", fontsize=12, fontweight='bold',x=0.27)
+
+    
+    plt.tight_layout()
+    return plt
   
 # -----------------------------------------------------       
 # Create a table with statistical information

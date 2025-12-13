@@ -27,14 +27,14 @@ if __name__ == '__main__':
     parser.add_argument('-r', '--record', help='Outputs log to .txt file', required=False, action='store_true')
     parser.add_argument('-s', '--sample', help='Number of training samples', required=False, type=int, default=500)
     parser.add_argument('-f', '--fold', help='Number of folds that the model is trained', required=False, type=int, default=3)
-    parser.add_argument('-a', '--annotation', help='Annotation quality [1,0.9,0.78,0.72,0.57]', required=False, type=float, default=1)
+    parser.add_argument('-a', '--annotation', help='Annotation quality [1,0.9,0.77,0.67,0.57,0.84]', required=False, type=float, default=1)
 
 
     args = parser.parse_args()
 
     lr = args.learning_rate
 
-    if not args.annotation in [1,0.9,0.78,0.72,0.57]:
+    if not args.annotation in [1,0.9,0.77,0.67,0.57,0.84]:
         raise Exception('bad annotation value, see usage')
     
     if args.annotation == 1:
@@ -48,10 +48,6 @@ if __name__ == '__main__':
 
     val_dataset = SegmentationDataset(val_dataset_path)
 
-    #val_dataset = SegmentationDataset(f"dataset/eroded-dilated_{args.annotation}")
-    img, msk = val_dataset[4]
-
-    #print(msk.max(), msk.min(), np.count_nonzero(msk))
 
 
     print("my image : ", np.count_nonzero(val_dataset[40][1]))
@@ -65,7 +61,7 @@ if __name__ == '__main__':
 
     if args.record:
         stdoutOrigin=sys.stdout 
-        sys.stdout = open(f"plots/log_depth{args.depth}_fls{args.first_layer_size}_annotation{1}_sample{n_train}.txt", "w")
+        sys.stdout = open(f"plots/log_depth{args.depth}_fls{args.first_layer_size}_annotation{args.annotation}_sample{n_train}.txt", "w")
         df = pd.read_csv('results.csv')
 
     device = torch.device("cuda" if torch.cuda.is_available() else ("mps" if torch.backends.mps.is_available() else "cpu"))
@@ -125,8 +121,8 @@ if __name__ == '__main__':
                 msks = msks.unsqueeze(1)
                 loss = criterion(model(imgs), msks)
                 loss.backward()
-                scheduler.step(loss)
                 optimizer.step()
+                scheduler.step(loss)
                 running += loss.item() * imgs.size(0)
 
                 
@@ -136,6 +132,10 @@ if __name__ == '__main__':
             model.eval()
             val_running = 0.0
             iou_running = 0.0
+            best_iou = 0
+            worst_iou = 1
+            best_img, worst_img, best_pred, worst_pred, best_mask, worst_mask= None, None, None,None,None,None
+   
             with torch.no_grad():
                 for imgs, msks in val_loader:
                     imgs, msks = imgs.to(device), msks.to(device).float()
@@ -146,24 +146,53 @@ if __name__ == '__main__':
                     val_running += vloss.item() * imgs.size(0)
 
                     pred = (torch.sigmoid(out) > 0.5).float()
+                    iou_img = jaccard_score(
+                    msks.squeeze(1).cpu().numpy().reshape(-1).astype(int),
+                    pred.squeeze(1).cpu().numpy().reshape(-1).astype(int)
+                    )
 
-                    intersection = (pred * msks).sum()
-                    union = pred.sum() + msks.sum() - intersection
+                    iou_running += iou_img
 
-                    iou = (intersection / (union + 1e-6)).item()
-                    iou_running += iou
 
-                    #iou_running += jaccard_score(
+                    batch_size = imgs.size(0)
+                    for i in range(batch_size):
+                        # Get single image, mask, and prediction
+                        single_mask = msks[i].squeeze(0).cpu().numpy().reshape(-1).astype(int)
+                        single_pred = pred[i].squeeze(0).cpu().numpy().reshape(-1).astype(int)
+                        
+                        # Calculate IoU for this single image
+                        iou_img = jaccard_score(single_mask, single_pred)
+                        iou_running += iou_img  # Adjust running total
+                        
+                        # Track best image
+                        if iou_img > best_iou:
+                            best_iou = iou_img
+                            best_img = imgs[i:i+1].clone()
+                            best_mask = msks[i:i+1].clone()  # Keep batch dimension
+                            best_pred = pred[i:i+1].clone()
+                            best_mask = msks[i:i+1].clone()
+                        
+                        # Track worst image
+                        if iou_img < worst_iou:
+                            worst_iou = iou_img
+                            worst_img = imgs[i:i+1].clone()
+                            worst_mask = msks[i:i+1].clone()
+                            worst_pred = pred[i:i+1].clone()
+                            worst_mask = msks[i:i+1].clone()
+                    iou_running /= batch_size
+
                     
-                        #msks.squeeze(1).cpu().numpy().reshape(-1).astype(int),
-                        #pred.squeeze(1).cpu().numpy().reshape(-1).astype(int),
-                        #average="binary"
-                    #)
             va_loss = val_running / len(val_loader)
             va_iou = iou_running / len(val_loader)
             val_losses.append(va_loss)
             val_ious.append(va_iou)
+
+            
             print(f"Epoch [{epoch+1}/{args.epochs}]  train_loss: {tr_loss:.4f}  val_loss: {va_loss:.4f} iou:{va_iou:.4f}  time: {time.time() - start_epoch_time:.2f}s lr: {scheduler.get_last_lr()[0]:.2E}")
+            # ---- snapshot every N/10 epochs on the first training sample
+            # if epoch % 10 == 0:
+            #     visualize_prediction(model, original_dataset, device, sample_idx=0)
+            #     
 
             if scheduler.get_last_lr()[0] < 1e-7:
                 break
@@ -171,6 +200,17 @@ if __name__ == '__main__':
         num_params = sum(p.numel() for p in model.parameters() if p.requires_grad)
         t = time.time() - start_time
 
+        best_plt = visualize_img(best_img,best_mask,best_pred,best_iou)
+        if args.record :
+            best_plt.savefig(f"plots/best_pred_depth{args.depth}_fls{args.first_layer_size}_annotation{args.annotation}_sample{n_train}_fold{fold}.png")
+        else :
+            best_plt.show()
+
+        worst_plt = visualize_img(worst_img,worst_mask,worst_pred,worst_iou,best=False)
+        if args.record :
+            worst_plt.savefig(f"plots/worst_pred_depth{args.depth}_fls{args.first_layer_size}_annotation{args.annotation}_sample{n_train}_fold{fold}.png")
+        else : 
+            worst_plt.show()
 
         epochs_range = range(1, done_epochs + 1)
         plt.figure(figsize=(10,5))
@@ -182,9 +222,11 @@ if __name__ == '__main__':
         plt.legend()
 
         if args.record:
-            plt.savefig(f'plots/losscurves_depth{args.depth}_fls{args.first_layer_size}_annotation{1}_sample{n_train}_fold{fold}.png')
+            plt.savefig(f'plots/losscurves_depth{args.depth}_fls{args.first_layer_size}_annotation{args.annotation}_sample{n_train}_fold{fold}.png')
+
         else:
             plt.show()
+
 
         plt.figure(figsize=(10,5))
         plt.plot(epochs_range, val_ious, label="Val IoU")
@@ -194,7 +236,7 @@ if __name__ == '__main__':
         plt.legend()
 
         if args.record:
-            plt.savefig(f'plots/ioucurve_depth{args.depth}_fls{args.first_layer_size}_annotation{1}_sample{n_train}_fold{fold}.png')
+            plt.savefig(f'plots/ioucurve_depth{args.depth}_fls{args.first_layer_size}_annotation{args.annotation}_sample{n_train}_fold{fold}.png')
         else:
             plt.show()
 
@@ -208,7 +250,7 @@ if __name__ == '__main__':
     print(f"Mean time : {mean_time:2f}s")
 
     if args.record:
-        df.loc[len(df)] = [int(args.depth), int(args.first_layer_size), 1, int(n_train), mean_iou, mean_time, int(num_params)]
+        df.loc[len(df)] = [int(args.depth), int(args.first_layer_size), args.annotation, int(n_train), mean_iou, mean_time, int(num_params)]
         df.to_csv('results.csv', index=False)
 
     if args.record:

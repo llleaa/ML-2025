@@ -1,0 +1,6 @@
+Load images from dataset/eroded-dilated_0.9: 96 
+Number of image in Train: 76 | Val: 20
+Pretrained model: None
+UNet: 31036481 number of trainable parameters of model 
+Using device: cuda
+Starting training for 1000 epochs...

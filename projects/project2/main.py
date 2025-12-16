@@ -17,6 +17,7 @@ import sys
 
 if __name__ == '__main__':
 
+    # Parsing arguments as described in help
     parser = argparse.ArgumentParser()
     parser.add_argument('--load_model', help='Load trained model from path', required=False, type=str, default=None)
     parser.add_argument('-lr', '--learning_rate', help='Learning rate', required=False, type=float, default=1e-3)
@@ -32,10 +33,12 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
+    # for convenience
     lr = args.learning_rate
+    
 
-    if not args.annotation in [1,0.9,0.77,0.67,0.57,0.84]:
-        raise Exception('bad annotation value, see usage')
+    if not args.annotation in [1,0.9,0.84,0.77,0.67,0.57,]:
+        raise Exception('Bad annotation value, see usage')
     
     if args.annotation == 1:
         train_dataset_path = f"dataset/generated_cells"
@@ -47,34 +50,35 @@ if __name__ == '__main__':
     train_dataset = SegmentationDataset(train_dataset_path)
 
     val_dataset = SegmentationDataset(val_dataset_path)
-
-
-
-    print("my image : ", np.count_nonzero(val_dataset[40][1]))
-    print("my image : ", np.count_nonzero(train_dataset[40][1]))
-
     
     val_ratio = 0.2
     n_train = int(min(args.sample, len(train_dataset) * (1-val_ratio)))
     n_val = len(train_dataset) - n_train
 
-
+    # Little trick to "hijack" stdout to a log file and track results
     if args.record:
         stdoutOrigin=sys.stdout 
         sys.stdout = open(f"plots/log_depth{args.depth}_fls{args.first_layer_size}_annotation{args.annotation}_sample{n_train}.txt", "w")
         df = pd.read_csv('results.csv')
 
+    # Use GPU
     device = torch.device("cuda" if torch.cuda.is_available() else ("mps" if torch.backends.mps.is_available() else "cpu"))
 
-    print(f'Load images {train_dataset_path}: {len(train_dataset)} ')
+    print(f'Load images from {train_dataset_path}: {len(train_dataset)} ')
 
     mean_time = 0
     mean_iou = 0
 
     for fold in range(args.fold):
+        
+        # If multiple folds, need to reload dataset to recompute subsets (really fast in practice)
+        if fold != 0:
+            train_dataset = SegmentationDataset(train_dataset_path)
+            val_dataset = SegmentationDataset(val_dataset_path)
 
+
+        # Randomly separates dataset in train and validation subparts
         perm = torch.randperm(len(train_dataset)).tolist()
-        print(perm)
         train_dataset = Subset(train_dataset, perm[n_val:])
         val_dataset = Subset(val_dataset, perm[:n_val])
 
@@ -123,6 +127,8 @@ if __name__ == '__main__':
                 loss.backward()
                 optimizer.step()
                 scheduler.step(loss)
+
+                # additionning running loss to average it at the end of epoch
                 running += loss.item() * imgs.size(0)
 
                 
@@ -189,29 +195,28 @@ if __name__ == '__main__':
 
             
             print(f"Epoch [{epoch+1}/{args.epochs}]  train_loss: {tr_loss:.4f}  val_loss: {va_loss:.4f} iou:{va_iou:.4f}  time: {time.time() - start_epoch_time:.2f}s lr: {scheduler.get_last_lr()[0]:.2E}")
-            # ---- snapshot every N/10 epochs on the first training sample
-            # if epoch % 10 == 0:
-            #     visualize_prediction(model, original_dataset, device, sample_idx=0)
-            #     
 
+            # Early stop on good plateau, conformingly to lr scheduler
             if scheduler.get_last_lr()[0] < 1e-7:
                 break
 
-        num_params = sum(p.numel() for p in model.parameters() if p.requires_grad)
         t = time.time() - start_time
 
+        # Save plot of best validation image
         best_plt = visualize_img(best_img,best_mask,best_pred,best_iou)
         if args.record :
             best_plt.savefig(f"plots/best_pred_depth{args.depth}_fls{args.first_layer_size}_annotation{args.annotation}_sample{n_train}_fold{fold}.png")
         else :
             best_plt.show()
 
+        # Save plot of worst validation image
         worst_plt = visualize_img(worst_img,worst_mask,worst_pred,worst_iou,best=False)
         if args.record :
             worst_plt.savefig(f"plots/worst_pred_depth{args.depth}_fls{args.first_layer_size}_annotation{args.annotation}_sample{n_train}_fold{fold}.png")
         else : 
             worst_plt.show()
 
+        # Plot loss curves (saved if record flag)
         epochs_range = range(1, done_epochs + 1)
         plt.figure(figsize=(10,5))
         plt.plot(epochs_range, train_losses, label="Train Loss")
@@ -227,7 +232,7 @@ if __name__ == '__main__':
         else:
             plt.show()
 
-
+        # Plot IoU curves (saved if record flag)
         plt.figure(figsize=(10,5))
         plt.plot(epochs_range, val_ious, label="Val IoU")
         plt.xlabel("Epoch")
@@ -249,6 +254,7 @@ if __name__ == '__main__':
 
     print(f"Mean time : {mean_time:2f}s")
 
+    # Saves mean results in results.csv
     if args.record:
         df.loc[len(df)] = [int(args.depth), int(args.first_layer_size), args.annotation, int(n_train), mean_iou, mean_time, int(num_params)]
         df.to_csv('results.csv', index=False)
@@ -256,6 +262,5 @@ if __name__ == '__main__':
     if args.record:
         sys.stdout.close()
         sys.stdout=stdoutOrigin
-    
 
 

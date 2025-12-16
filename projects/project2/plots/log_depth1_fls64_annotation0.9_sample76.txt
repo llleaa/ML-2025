@@ -1,0 +1,129 @@
+Load images dataset/eroded-dilated_0.9: 96 
+[15, 29, 38, 18, 82, 47, 71, 10, 8, 63, 4, 70, 52, 61, 19, 13, 33, 35, 21, 20, 43, 45, 59, 22, 65, 62, 44, 53, 86, 73, 95, 54, 72, 76, 64, 0, 41, 17, 92, 16, 12, 68, 90, 88, 49, 26, 46, 94, 6, 74, 81, 37, 2, 67, 11, 1, 32, 14, 50, 30, 51, 3, 85, 89, 66, 80, 78, 57, 7, 83, 55, 40, 75, 34, 84, 93, 87, 36, 48, 39, 77, 28, 31, 91, 58, 25, 69, 23, 27, 9, 5, 60, 42, 24, 56, 79]
+Number of image in Train: 76 | Val: 20
+Pretrained model: None
+UNet: 403137 number of trainable parameters of model 
+Using device: cuda
+Starting training for 1000 epochs...
+Epoch [1/1000]  train_loss: 23.2150  val_loss: 12.6579 iou:0.6046  time: 2.48s lr: 1.00E-03
+Epoch [2/1000]  train_loss: 12.9772  val_loss: 11.4713 iou:0.6962  time: 1.29s lr: 1.00E-03
+Epoch [3/1000]  train_loss: 11.4668  val_loss: 10.0494 iou:0.7376  time: 1.32s lr: 1.00E-03
+Epoch [4/1000]  train_loss: 10.7932  val_loss: 8.0045 iou:0.8465  time: 1.71s lr: 1.00E-03
+Epoch [5/1000]  train_loss: 10.1798  val_loss: 6.7267 iou:0.8655  time: 1.72s lr: 1.00E-03
+Epoch [6/1000]  train_loss: 9.8198  val_loss: 6.0044 iou:0.8703  time: 1.74s lr: 1.00E-03
+Epoch [7/1000]  train_loss: 9.3808  val_loss: 5.4543 iou:0.8712  time: 1.33s lr: 1.00E-03
+Epoch [8/1000]  train_loss: 9.0945  val_loss: 4.9599 iou:0.8741  time: 1.35s lr: 1.00E-03
+Epoch [9/1000]  train_loss: 8.8428  val_loss: 4.5871 iou:0.8717  time: 1.72s lr: 1.00E-03
+Epoch [10/1000]  train_loss: 8.5469  val_loss: 4.3240 iou:0.8716  time: 1.73s lr: 1.00E-03
+Epoch [11/1000]  train_loss: 8.3027  val_loss: 4.0936 iou:0.8737  time: 1.76s lr: 1.00E-03
+Epoch [12/1000]  train_loss: 8.1008  val_loss: 3.9418 iou:0.8696  time: 1.29s lr: 1.00E-03
+Epoch [13/1000]  train_loss: 7.9827  val_loss: 3.8761 iou:0.8624  time: 1.30s lr: 1.00E-03
+Epoch [14/1000]  train_loss: 7.9061  val_loss: 3.7427 iou:0.8567  time: 1.30s lr: 1.00E-03
+Epoch [15/1000]  train_loss: 7.6043  val_loss: 3.5609 iou:0.8661  time: 1.58s lr: 1.00E-03
+Epoch [16/1000]  train_loss: 7.4605  val_loss: 3.3251 iou:0.8769  time: 1.32s lr: 1.00E-03
+Epoch [17/1000]  train_loss: 7.3045  val_loss: 3.1993 iou:0.8804  time: 1.32s lr: 1.00E-03
+Epoch [18/1000]  train_loss: 7.1428  val_loss: 3.1892 iou:0.8825  time: 1.34s lr: 1.00E-03
+Epoch [19/1000]  train_loss: 6.9940  val_loss: 3.1522 iou:0.8834  time: 1.71s lr: 1.00E-03
+Epoch [20/1000]  train_loss: 6.8340  val_loss: 3.1199 iou:0.8882  time: 1.73s lr: 1.00E-03
+Epoch [21/1000]  train_loss: 6.7030  val_loss: 3.1152 iou:0.8897  time: 1.71s lr: 1.00E-03
+Epoch [22/1000]  train_loss: 6.5557  val_loss: 3.1030 iou:0.8857  time: 1.74s lr: 1.00E-03
+Epoch [23/1000]  train_loss: 6.4984  val_loss: 3.0870 iou:0.8829  time: 1.70s lr: 1.00E-03
+Epoch [24/1000]  train_loss: 6.3246  val_loss: 3.1004 iou:0.8840  time: 1.28s lr: 1.00E-03
+Epoch [25/1000]  train_loss: 6.1538  val_loss: 3.0179 iou:0.8936  time: 1.29s lr: 1.00E-03
+Epoch [26/1000]  train_loss: 6.0639  val_loss: 2.8561 iou:0.8991  time: 1.79s lr: 1.00E-03
+Epoch [27/1000]  train_loss: 5.9597  val_loss: 2.7954 iou:0.8982  time: 1.74s lr: 1.00E-03
+Epoch [28/1000]  train_loss: 5.8510  val_loss: 2.8359 iou:0.9029  time: 1.30s lr: 1.00E-03
+Epoch [29/1000]  train_loss: 5.7268  val_loss: 2.9813 iou:0.9007  time: 1.31s lr: 1.00E-03
+Epoch [30/1000]  train_loss: 5.7100  val_loss: 3.1692 iou:0.8716  time: 1.73s lr: 1.00E-03
+Epoch [31/1000]  train_loss: 5.5107  val_loss: 3.2344 iou:0.8599  time: 1.92s lr: 1.00E-03
+Epoch [32/1000]  train_loss: 5.4609  val_loss: 3.4796 iou:0.8398  time: 1.28s lr: 1.00E-03
+Epoch [33/1000]  train_loss: 5.4124  val_loss: 3.1069 iou:0.8709  time: 1.25s lr: 1.00E-03
+Epoch [34/1000]  train_loss: 5.3615  val_loss: 2.5730 iou:0.9234  time: 1.73s lr: 1.00E-03
+Epoch [35/1000]  train_loss: 5.1514  val_loss: 2.6389 iou:0.9199  time: 1.70s lr: 1.00E-03
+Epoch [36/1000]  train_loss: 5.1455  val_loss: 2.8884 iou:0.8775  time: 1.38s lr: 1.00E-03
+Epoch [37/1000]  train_loss: 4.9982  val_loss: 2.6474 iou:0.9033  time: 1.33s lr: 1.00E-03
+Epoch [38/1000]  train_loss: 5.0493  val_loss: 2.4033 iou:0.9240  time: 1.73s lr: 1.00E-03
+Epoch [39/1000]  train_loss: 5.4646  val_loss: 2.4848 iou:0.9031  time: 1.70s lr: 1.00E-03
+Epoch [40/1000]  train_loss: 5.6173  val_loss: 2.8548 iou:0.8311  time: 1.35s lr: 1.00E-03
+Epoch [41/1000]  train_loss: 5.2297  val_loss: 3.7172 iou:0.6905  time: 1.25s lr: 1.00E-03
+Epoch [42/1000]  train_loss: 4.9811  val_loss: 3.7287 iou:0.7122  time: 1.74s lr: 1.00E-03
+Epoch [43/1000]  train_loss: 4.9760  val_loss: 3.5411 iou:0.7405  time: 1.81s lr: 4.00E-04
+Epoch [44/1000]  train_loss: 5.0221  val_loss: 3.5123 iou:0.7270  time: 1.30s lr: 4.00E-04
+Epoch [45/1000]  train_loss: 4.9181  val_loss: 3.4443 iou:0.7277  time: 1.25s lr: 4.00E-04
+Epoch [46/1000]  train_loss: 4.7653  val_loss: 3.2557 iou:0.7577  time: 1.73s lr: 4.00E-04
+Epoch [47/1000]  train_loss: 4.7600  val_loss: 3.1388 iou:0.7852  time: 1.72s lr: 4.00E-04
+Epoch [48/1000]  train_loss: 4.7503  val_loss: 2.9958 iou:0.8193  time: 1.42s lr: 1.60E-04
+Epoch [49/1000]  train_loss: 4.7137  val_loss: 2.8170 iou:0.8454  time: 1.28s lr: 1.60E-04
+Epoch [50/1000]  train_loss: 4.6665  val_loss: 2.6759 iou:0.8640  time: 1.71s lr: 1.60E-04
+Epoch [51/1000]  train_loss: 4.6400  val_loss: 2.5867 iou:0.8733  time: 1.72s lr: 1.60E-04
+Epoch [52/1000]  train_loss: 4.5497  val_loss: 2.5188 iou:0.8815  time: 1.38s lr: 1.60E-04
+Epoch [53/1000]  train_loss: 4.5831  val_loss: 2.4638 iou:0.8874  time: 1.35s lr: 1.60E-04
+Epoch [54/1000]  train_loss: 4.5958  val_loss: 2.3511 iou:0.9009  time: 1.76s lr: 1.60E-04
+Epoch [55/1000]  train_loss: 4.4820  val_loss: 2.2308 iou:0.9139  time: 1.73s lr: 1.60E-04
+Epoch [56/1000]  train_loss: 4.4809  val_loss: 2.2080 iou:0.9158  time: 1.29s lr: 6.40E-05
+Epoch [57/1000]  train_loss: 4.4805  val_loss: 2.2252 iou:0.9141  time: 1.33s lr: 6.40E-05
+Epoch [58/1000]  train_loss: 4.4884  val_loss: 2.2583 iou:0.9090  time: 1.45s lr: 6.40E-05
+Epoch [59/1000]  train_loss: 4.4683  val_loss: 2.3021 iou:0.9045  time: 1.79s lr: 6.40E-05
+Epoch [60/1000]  train_loss: 4.4678  val_loss: 2.3480 iou:0.9005  time: 1.74s lr: 6.40E-05
+Epoch [61/1000]  train_loss: 4.4091  val_loss: 2.3823 iou:0.8960  time: 1.26s lr: 6.40E-05
+Epoch [62/1000]  train_loss: 4.4391  val_loss: 2.3872 iou:0.8965  time: 1.42s lr: 6.40E-05
+Epoch [63/1000]  train_loss: 4.4106  val_loss: 2.3689 iou:0.8975  time: 1.70s lr: 6.40E-05
+Epoch [64/1000]  train_loss: 4.3859  val_loss: 2.3450 iou:0.9008  time: 1.73s lr: 6.40E-05
+Epoch [65/1000]  train_loss: 4.3708  val_loss: 2.3069 iou:0.9059  time: 1.85s lr: 6.40E-05
+Epoch [66/1000]  train_loss: 4.3601  val_loss: 2.2698 iou:0.9101  time: 1.31s lr: 6.40E-05
+Epoch [67/1000]  train_loss: 4.4707  val_loss: 2.2256 iou:0.9167  time: 1.26s lr: 6.40E-05
+Epoch [68/1000]  train_loss: 4.3861  val_loss: 2.1809 iou:0.9210  time: 1.73s lr: 6.40E-05
+Epoch [69/1000]  train_loss: 4.3345  val_loss: 2.1506 iou:0.9225  time: 1.73s lr: 6.40E-05
+Epoch [70/1000]  train_loss: 4.3699  val_loss: 2.1537 iou:0.9205  time: 1.30s lr: 2.56E-05
+Epoch [71/1000]  train_loss: 4.3389  val_loss: 2.1749 iou:0.9176  time: 1.28s lr: 2.56E-05
+Epoch [72/1000]  train_loss: 4.3272  val_loss: 2.1930 iou:0.9149  time: 1.73s lr: 2.56E-05
+Epoch [73/1000]  train_loss: 4.3506  val_loss: 2.2083 iou:0.9133  time: 1.82s lr: 2.56E-05
+Epoch [74/1000]  train_loss: 4.3342  val_loss: 2.2264 iou:0.9102  time: 1.34s lr: 2.56E-05
+Epoch [75/1000]  train_loss: 4.4365  val_loss: 2.2301 iou:0.9106  time: 1.28s lr: 1.02E-05
+Epoch [76/1000]  train_loss: 4.3222  val_loss: 2.2377 iou:0.9085  time: 1.74s lr: 1.02E-05
+Epoch [77/1000]  train_loss: 4.3226  val_loss: 2.2426 iou:0.9086  time: 1.71s lr: 1.02E-05
+Epoch [78/1000]  train_loss: 4.2952  val_loss: 2.2409 iou:0.9082  time: 1.30s lr: 1.02E-05
+Epoch [79/1000]  train_loss: 4.2947  val_loss: 2.2445 iou:0.9082  time: 1.72s lr: 1.02E-05
+Epoch [80/1000]  train_loss: 4.2964  val_loss: 2.2477 iou:0.9076  time: 1.73s lr: 1.02E-05
+Epoch [81/1000]  train_loss: 4.4462  val_loss: 2.2452 iou:0.9084  time: 1.28s lr: 4.10E-06
+Epoch [82/1000]  train_loss: 4.4024  val_loss: 2.2415 iou:0.9096  time: 1.23s lr: 4.10E-06
+Epoch [83/1000]  train_loss: 4.2815  val_loss: 2.2385 iou:0.9100  time: 1.75s lr: 4.10E-06
+Epoch [84/1000]  train_loss: 4.2864  val_loss: 2.2394 iou:0.9089  time: 1.70s lr: 4.10E-06
+Epoch [85/1000]  train_loss: 4.2862  val_loss: 2.2376 iou:0.9084  time: 1.30s lr: 4.10E-06
+Epoch [86/1000]  train_loss: 4.3749  val_loss: 2.2413 iou:0.9063  time: 1.71s lr: 1.64E-06
+Epoch [87/1000]  train_loss: 4.2980  val_loss: 2.2428 iou:0.9066  time: 1.72s lr: 1.64E-06
+Epoch [88/1000]  train_loss: 4.3188  val_loss: 2.2432 iou:0.9055  time: 1.34s lr: 1.64E-06
+Epoch [89/1000]  train_loss: 4.2905  val_loss: 2.2421 iou:0.9058  time: 1.37s lr: 1.64E-06
+Epoch [90/1000]  train_loss: 4.2987  val_loss: 2.2446 iou:0.9061  time: 1.25s lr: 1.64E-06
+Epoch [91/1000]  train_loss: 4.2832  val_loss: 2.2444 iou:0.9060  time: 1.72s lr: 1.64E-06
+Epoch [92/1000]  train_loss: 4.3099  val_loss: 2.2491 iou:0.9050  time: 1.73s lr: 6.55E-07
+Epoch [93/1000]  train_loss: 4.2891  val_loss: 2.2486 iou:0.9054  time: 1.72s lr: 6.55E-07
+Epoch [94/1000]  train_loss: 4.2887  val_loss: 2.2464 iou:0.9050  time: 1.74s lr: 6.55E-07
+Epoch [95/1000]  train_loss: 4.3903  val_loss: 2.2526 iou:0.9025  time: 1.70s lr: 6.55E-07
+Epoch [96/1000]  train_loss: 4.2897  val_loss: 2.2536 iou:0.9021  time: 1.31s lr: 6.55E-07
+Epoch [97/1000]  train_loss: 4.2826  val_loss: 2.2560 iou:0.9027  time: 1.31s lr: 6.55E-07
+Epoch [98/1000]  train_loss: 4.3225  val_loss: 2.2549 iou:0.9022  time: 1.24s lr: 6.55E-07
+Epoch [99/1000]  train_loss: 4.2801  val_loss: 2.2524 iou:0.9029  time: 1.28s lr: 6.55E-07
+Epoch [100/1000]  train_loss: 4.3509  val_loss: 2.2505 iou:0.9052  time: 1.37s lr: 6.55E-07
+Epoch [101/1000]  train_loss: 4.2923  val_loss: 2.2468 iou:0.9040  time: 1.72s lr: 6.55E-07
+Epoch [102/1000]  train_loss: 4.2803  val_loss: 2.2451 iou:0.9043  time: 1.41s lr: 6.55E-07
+Epoch [103/1000]  train_loss: 4.3013  val_loss: 2.2449 iou:0.9049  time: 1.27s lr: 2.62E-07
+Epoch [104/1000]  train_loss: 4.2693  val_loss: 2.2445 iou:0.9036  time: 1.70s lr: 2.62E-07
+Epoch [105/1000]  train_loss: 4.3250  val_loss: 2.2472 iou:0.9056  time: 1.73s lr: 2.62E-07
+Epoch [106/1000]  train_loss: 4.2876  val_loss: 2.2546 iou:0.9051  time: 1.27s lr: 2.62E-07
+Epoch [107/1000]  train_loss: 4.4841  val_loss: 2.2499 iou:0.9072  time: 1.27s lr: 2.62E-07
+Epoch [108/1000]  train_loss: 4.4316  val_loss: 2.2500 iou:0.9078  time: 1.72s lr: 1.05E-07
+Epoch [109/1000]  train_loss: 4.3051  val_loss: 2.2468 iou:0.9068  time: 1.74s lr: 1.05E-07
+Epoch [110/1000]  train_loss: 4.2770  val_loss: 2.2423 iou:0.9065  time: 1.31s lr: 1.05E-07
+Epoch [111/1000]  train_loss: 4.2777  val_loss: 2.2409 iou:0.9068  time: 1.41s lr: 1.05E-07
+Epoch [112/1000]  train_loss: 4.2810  val_loss: 2.2426 iou:0.9064  time: 1.71s lr: 1.05E-07
+Epoch [113/1000]  train_loss: 4.3111  val_loss: 2.2446 iou:0.9068  time: 1.37s lr: 1.05E-07
+Epoch [114/1000]  train_loss: 4.3459  val_loss: 2.2439 iou:0.9076  time: 1.29s lr: 4.19E-08
+Best IoU on prediction: 0.9438
+Worst IoU on prediction: 0.5997
+[31, 50, 59, 25, 61, 15, 70, 2, 24, 39, 29, 5, 23, 36, 28, 52, 13, 64, 53, 40, 48, 51, 33, 42, 54, 27, 14, 65, 12, 46, 56, 66, 63, 35, 68, 18, 47, 74, 67, 60, 21, 6, 16, 55, 4, 0, 41, 69, 3, 7, 10, 49, 19, 58, 57, 75, 1, 9, 22, 17, 62, 73, 20, 44, 43, 32, 8, 30, 45, 26, 38, 71, 72, 37, 34, 11]
+Number of image in Train: 56 | Val: 20
+Pretrained model: None
+UNet: 403137 number of trainable parameters of model 
+Using device: cuda
+Starting training for 1000 epochs...

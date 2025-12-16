@@ -1,0 +1,20 @@
+Load images dataset/eroded-dilated_0.77: 96 
+[24, 52, 58, 81, 42, 66, 2, 41, 57, 6, 55, 43, 34, 51, 84, 5, 54, 79, 3, 33, 39, 44, 49, 91, 67, 8, 74, 75, 36, 22, 11, 9, 78, 29, 89, 61, 14, 70, 10, 64, 53, 40, 95, 31, 82, 21, 16, 20, 60, 72, 4, 12, 56, 50, 65, 38, 80, 94, 85, 77, 68, 46, 76, 90, 69, 63, 15, 19, 7, 71, 32, 92, 17, 27, 28, 35, 73, 88, 45, 87, 59, 48, 1, 26, 47, 25, 93, 18, 37, 86, 13, 23, 0, 30, 83, 62]
+Number of image in Train: 76 | Val: 20
+Pretrained model: None
+UNet: 1926433 number of trainable parameters of model 
+Using device: cuda
+Starting training for 10 epochs...
+Epoch [1/10]  train_loss: 25.9054  val_loss: 13.0516 iou:0.0000  time: 2.15s lr: 1.00E-03
+Epoch [2/10]  train_loss: 17.1011  val_loss: 12.7419 iou:0.0000  time: 1.27s lr: 1.00E-03
+Epoch [3/10]  train_loss: 14.0736  val_loss: 12.0673 iou:0.2012  time: 1.19s lr: 1.00E-03
+Epoch [4/10]  train_loss: 12.7450  val_loss: 11.1524 iou:0.3487  time: 1.62s lr: 1.00E-03
+Epoch [5/10]  train_loss: 12.6481  val_loss: 10.1376 iou:0.4782  time: 1.67s lr: 1.00E-03
+Epoch [6/10]  train_loss: 12.2858  val_loss: 9.1950 iou:0.4428  time: 1.20s lr: 1.00E-03
+Epoch [7/10]  train_loss: 12.1585  val_loss: 8.3337 iou:0.4149  time: 1.29s lr: 1.00E-03
+Epoch [8/10]  train_loss: 11.4789  val_loss: 7.6531 iou:0.5944  time: 1.35s lr: 1.00E-03
+Epoch [9/10]  train_loss: 11.1933  val_loss: 6.5134 iou:0.8115  time: 1.54s lr: 1.00E-03
+Epoch [10/10]  train_loss: 10.8226  val_loss: 5.6620 iou:0.8224  time: 1.43s lr: 1.00E-03
+Best IoU on prediction: 0.8887
+Worst IoU on prediction: 0.6468
+Mean time : 14.987417s

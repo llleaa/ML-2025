@@ -1,0 +1,7 @@
+Load images dataset/eroded-dilated_0.77: 96 
+[62, 6, 57, 55, 48, 15, 59, 30, 69, 24, 40, 33, 66, 88, 22, 18, 7, 25, 93, 61, 14, 49, 5, 46, 10, 9, 50, 52, 41, 89, 36, 26, 70, 23, 20, 64, 72, 11, 35, 87, 44, 28, 85, 76, 0, 42, 75, 84, 39, 83, 51, 81, 31, 34, 27, 38, 43, 60, 53, 13, 4, 12, 21, 8, 19, 74, 79, 58, 63, 3, 80, 17, 82, 29, 78, 91, 1, 86, 73, 68, 54, 71, 95, 16, 90, 67, 37, 2, 77, 47, 94, 45, 92, 32, 65, 56]
+Number of image in Train: 76 | Val: 20
+Pretrained model: None
+UNet: 7699009 number of trainable parameters of model 
+Using device: cuda
+Starting training for 1000 epochs...

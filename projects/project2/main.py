@@ -113,6 +113,7 @@ if __name__ == '__main__':
         train_losses, val_losses, val_ious = [], [], []
         done_epochs = 0
 
+        # Train the model
         for epoch in range(args.epochs):
             done_epochs += 1
             start_epoch_time = time.time()
@@ -141,7 +142,8 @@ if __name__ == '__main__':
             best_iou = 0
             worst_iou = 1
             best_img, worst_img, best_pred, worst_pred, best_mask, worst_mask= None, None, None,None,None,None
-   
+
+            # Test the model on validation set
             with torch.no_grad():
                 for imgs, msks in val_loader:
                     imgs, msks = imgs.to(device), msks.to(device).float()
@@ -187,7 +189,7 @@ if __name__ == '__main__':
                             worst_mask = msks[i:i+1].clone()
                     iou_running /= batch_size
 
-                    
+            # Downscale loss and IoU in respect to batch size, and add them to plot the time series afterwards
             va_loss = val_running / len(val_loader)
             va_iou = iou_running / len(val_loader)
             val_losses.append(va_loss)
@@ -249,6 +251,7 @@ if __name__ == '__main__':
         mean_time += t
         mean_iou += val_ious[-1]
 
+    # Downscales time and IoU conformingly to the number of folds
     mean_time /= args.fold
     mean_iou /= args.fold
 
@@ -259,6 +262,7 @@ if __name__ == '__main__':
         df.loc[len(df)] = [int(args.depth), int(args.first_layer_size), args.annotation, int(n_train), mean_iou, mean_time, int(num_params)]
         df.to_csv('results.csv', index=False)
 
+    # Closes the file and retrieves stdout
     if args.record:
         sys.stdout.close()
         sys.stdout=stdoutOrigin

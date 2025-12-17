@@ -2,6 +2,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torch
 
+# Convenient class to describe 2 convolution layers for a U-Net model
 class DoubleConv(nn.Module):
     """(convolution => [BN] => ReLU) * 2"""
 
@@ -21,7 +22,7 @@ class DoubleConv(nn.Module):
     def forward(self, x):
         return self.double_conv(x)
 
-
+# Convenient class to describe 2 convolution layers and a downscale for a U-Net model
 class Down(nn.Module):
     """Downscaling with maxpool then double conv"""
 
@@ -35,7 +36,7 @@ class Down(nn.Module):
     def forward(self, x):
         return self.maxpool_conv(x)
 
-
+# Convenient class to describe 2 convolution layers and an upscale for a U-Net model
 class Up(nn.Module):
     """Upscaling then double conv"""
 
@@ -57,7 +58,7 @@ class Up(nn.Module):
         x = torch.cat([x2, x1], dim=1)
         return self.conv(x)
 
-
+# Convenient class to describe an out convolution for a U-Net model
 class OutConv(nn.Module):
     def __init__(self, in_channels, out_channels):
         super(OutConv, self).__init__()

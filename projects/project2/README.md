@@ -2,6 +2,7 @@ Usage guide for main.py
 
 To have all the dependencies, you can run this venv.
 $ source .mlenv/bin/activate
+Note : we could not add the venv to the repo because it was too big. However, this project uses very common libraries to machine learning, which shouldn't pose any issue.
 
 $ python main.py
 Simple command, you can add following flags :
@@ -19,5 +20,5 @@ Simple command, you can add following flags :
 
 To run the main file, you can also do
 $ ./run_main.sh
-which runs a bash file that iterates over different parameters, and saves them
+which runs a bash file that iterates over different parameters, and saves them.
 

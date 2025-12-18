@@ -19,9 +19,6 @@ The code was run on a computer with a large CPU, it might take a while to run/ n
     ├── README.md
     ├── results.csv
     ├── run_main.sh
-    ├── preprocessing.ipynb
-    ├── glm.ipynb
-    └── pca.ipynb
 
 ## Usage guide for main.py
 

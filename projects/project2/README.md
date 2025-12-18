@@ -1,7 +1,33 @@
-Usage guide for main.py
+
+## Disclamer
+The code was run on a computer with a large CPU, it might take a while to run/ not run if the model is too big, if your computer is not powerful enough.
+## Project architecture 
+
+    ├── Dataset/
+    │   ├── eroded-dilated_0.9
+    │   ├── eroded-dilated_0.57
+    │   ├── eroded-dilated_0.67
+    │   ├── eroded-dilated_0.77
+    │   ├── eroded-dilated_0.84
+    │   └── generated_cells
+    ├── Plots/
+    ├── cell_generator.ipynb
+    ├── data_loader.py
+    ├── main.py
+    ├── model_parts.py
+    ├── model.py
+    ├── README.md
+    ├── results.csv
+    ├── run_main.sh
+    ├── preprocessing.ipynb
+    ├── glm.ipynb
+    └── pca.ipynb
+
+## Usage guide for main.py
 
 To have all the dependencies, you can run this venv.
 $ source .mlenv/bin/activate
+
 Note : we could not add the venv to the repo because it was too big. However, this project uses very common libraries to machine learning, which shouldn't pose any issue.
 
 $ python main.py
@@ -21,4 +47,19 @@ Simple command, you can add following flags :
 To run the main file, you can also do
 $ ./run_main.sh
 which runs a bash file that iterates over different parameters, and saves them.
+
+## Usage guide for generating cells
+The cells are already generated but if you want to generate more you can run the ``cell_generator.ipynb`` file.
+You might need to install some library :
+* scikit-image
+* matplotlib.pyplo
+* scipy.ndimage
+* skimage.draw
+* perlin_noise
+* opencv2-python
+
+## Usage for DataLoader
+The code for the data loader was kindly provided to us. However if you have some issue concerning the import, here's a list : 
+* skimage, torch,os, time, shutil, random, warnings, csv,numpy, pandas, matplotlib.pyplot, torchvision, ipywidgets,IPython.display
+
 
